@@ -1,7 +1,12 @@
 
-resource "google_compute_instance" "jenkins_vm" {
+resource "google_compute_address" "jenkins_ip" {
+  name = "jenkins-static-ip"
+  region = var.region
+}
+
+resource "google_compute_instance" "jenkins" {
   name         = "jenkins-server"
-  machine_type = "e2-medium"
+  machine_type = var.machine_type
   zone         = var.zone
 
   boot_disk {
@@ -12,20 +17,50 @@ resource "google_compute_instance" "jenkins_vm" {
 
   network_interface {
     network       = "default"
-    access_config {}
+    access_config {
+      nat_ip = google_compute_address.jenkins_ip.address
+    }
   }
 
-  metadata_startup_script = <<-EOT
-    #!/bin/bash
-    apt-get update
-    apt-get install -y openjdk-11-jdk
-    wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | apt-key add -
-    sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
-    apt-get update
-    apt-get install -y jenkins
-    systemctl start jenkins
-    systemctl enable jenkins
-  EOT
+  metadata_startup_script = var.startup_script
+
+  service_account {
+    email  = google_service_account.jenkins.email
+    scopes = ["cloud-platform"]
+  }
 
   tags = ["jenkins"]
+}
+
+resource "google_compute_firewall" "allow_jenkins" {
+  name    = "allow-jenkins"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["8080"]
+  }
+
+  target_tags = ["jenkins"]
+  source_ranges = ["0.0.0.0/0"]
+}
+
+resource "google_service_account" "jenkins" {
+  account_id   = "jenkins-ci-sa"
+  display_name = "Jenkins CI Service Account"
+}
+
+resource "google_project_iam_member" "artifact_registry" {
+  role   = "roles/artifactregistry.writer"
+  member = "serviceAccount:${google_service_account.jenkins.email}"
+}
+
+resource "google_project_iam_member" "cloud_run" {
+  role   = "roles/run.admin"
+  member = "serviceAccount:${google_service_account.jenkins.email}"
+}
+
+resource "google_project_iam_member" "secret_manager" {
+  role   = "roles/secretmanager.secretAccessor"
+  member = "serviceAccount:${google_service_account.jenkins.email}"
 }
