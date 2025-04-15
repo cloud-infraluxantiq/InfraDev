@@ -2,6 +2,7 @@
 resource "google_compute_address" "jenkins_ip" {
   name = "jenkins-static-ip"
   region = var.region
+  project = var.project_id
 }
 
 resource "google_compute_instance" "jenkins" {
@@ -12,7 +13,8 @@ resource "google_compute_instance" "jenkins" {
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-2204-lts"
-    }
+      project = var.project_id
+}
   }
 
   network_interface {
@@ -39,7 +41,8 @@ resource "google_compute_firewall" "allow_jenkins" {
   allow {
     protocol = "tcp"
     ports    = ["8080"]
-  }
+    project = var.project_id
+}
 
   target_tags = ["jenkins"]
   source_ranges = ["0.0.0.0/0"]
@@ -48,19 +51,23 @@ resource "google_compute_firewall" "allow_jenkins" {
 resource "google_service_account" "jenkins" {
   account_id   = "jenkins-ci-sa"
   display_name = "Jenkins CI Service Account"
+  project = var.project_id
 }
 
 resource "google_project_iam_member" "artifact_registry" {
   role   = "roles/artifactregistry.writer"
-  member = "serviceAccount:${google_service_account.jenkins.email}"
+  member = "serviceAccount:${google_service_account.jenkins.email  project = var.project_id
+}"
 }
 
 resource "google_project_iam_member" "cloud_run" {
   role   = "roles/run.admin"
-  member = "serviceAccount:${google_service_account.jenkins.email}"
+  member = "serviceAccount:${google_service_account.jenkins.email  project = var.project_id
+}"
 }
 
 resource "google_project_iam_member" "secret_manager" {
   role   = "roles/secretmanager.secretAccessor"
-  member = "serviceAccount:${google_service_account.jenkins.email}"
+  member = "serviceAccount:${google_service_account.jenkins.email  project = var.project_id
+}"
 }

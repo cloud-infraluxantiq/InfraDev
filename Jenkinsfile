@@ -1,46 +1,72 @@
 
 pipeline {
-  agent any
+  agent {
+    docker {
+      image 'gcr.io/cloud-builders/docker'
+      args '-v /var/run/docker.sock:/var/run/docker.sock'
+    }
+  }
 
   environment {
-    PROJECT_ID = 'your-gcp-project-id'
-    REGION     = 'us-central1'
-    IMAGE_NAME = "${REGION}-docker.pkg.dev/${PROJECT_ID}/backend/django:latest"
-    CONNECTION = 'your-sql-connection-name'
+    PROJECT_ID = 'cloud-infra-dev'
+    REGION     = 'asia-south1'
+    DJANGO_IMAGE = "gcr.io/${PROJECT_ID}/djangoapi:latest"
+    ANGULAR_IMAGE = "gcr.io/${PROJECT_ID}/angularfrontend:latest"
+    GOOGLE_APPLICATION_CREDENTIALS = credentials('gcp-service-account-json') // Jenkins secret
   }
 
   stages {
     stage('Checkout') {
       steps {
-        git 'https://your-repo-url.git'
+        checkout scm
       }
     }
 
-    stage('Build Docker Image') {
+    stage('Build Django Image') {
       steps {
-        sh "docker build -t ${IMAGE_NAME} ."
+        dir('backend') {
+          sh 'docker build -t $DJANGO_IMAGE .'
+        }
       }
     }
 
-    stage('Push to Artifact Registry') {
+    stage('Build Angular Image') {
       steps {
-        sh "gcloud auth configure-docker ${REGION}-docker.pkg.dev"
-        sh "docker push ${IMAGE_NAME}"
+        dir('frontend') {
+          sh 'docker build -t $ANGULAR_IMAGE .'
+        }
       }
     }
 
-    stage('Deploy to Cloud Run') {
+    stage('Push Images') {
       steps {
-        sh """
-        gcloud run deploy django-api \
-          --image=${IMAGE_NAME} \
-          --region=${REGION} \
-          --platform=managed \
-          --allow-unauthenticated \
-          --add-cloudsql-instances=${CONNECTION} \
-          --set-secrets=DB_PASSWORD=db_password_secret:latest,JWT_SECRET=jwt_secret_key:latest
-        """
+        sh 'gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS'
+        sh 'gcloud auth configure-docker --quiet'
+        sh 'docker push $DJANGO_IMAGE'
+        sh 'docker push $ANGULAR_IMAGE'
       }
+    }
+
+    stage('Deploy (Optional)') {
+      when {
+        expression { return fileExists('InfraDev/InfraDev/main.tf') }
+      }
+      steps {
+        dir('InfraDev/InfraDev') {
+          sh 'gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS'
+          sh 'terraform init -input=false'
+          sh 'terraform apply -auto-approve'
+        }
+      }
+    }
+  }
+
+  post {
+    failure {
+      echo 'Pipeline failed!'
+    }
+    success {
+      echo '✅ Build + Deploy Successful!'
     }
   }
 }
