@@ -9,7 +9,8 @@ resource "google_storage_bucket" "buckets" {
 
   versioning {
     enabled = each.value.versioning
-  }
+    project = var.project_id
+}
 
   lifecycle_rule {
     action {
@@ -50,7 +51,8 @@ resource "google_storage_bucket_iam_member" "permissions" {
   for_each = {
     for bucket_name, bucket_config in var.buckets :
     bucket_name => bucket_config.iam_bindings
-  }
+    project = var.project_id
+}
 
   bucket = google_storage_bucket.buckets[each.key].name
   role   = each.value.role

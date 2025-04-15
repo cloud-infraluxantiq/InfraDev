@@ -16,7 +16,8 @@ resource "google_sql_database_instance" "postgres_instance" {
       enabled            = true
       start_time         = "03:00"
       point_in_time_recovery_enabled = true
-    }
+      project = var.project_id
+}
     maintenance_window {
       day          = 7
       hour         = 2
@@ -40,6 +41,7 @@ resource "google_sql_user" "users" {
   name     = each.key
   instance = google_sql_database_instance.postgres_instance.name
   password = each.value.password
+  project = var.project_id
 }
 
 resource "google_sql_database" "databases" {
@@ -47,9 +49,11 @@ resource "google_sql_database" "databases" {
 
   name     = each.value
   instance = google_sql_database_instance.postgres_instance.name
+  project = var.project_id
 }
 
 resource "google_project_iam_member" "cloudsql_admin" {
   role   = "roles/cloudsql.admin"
-  member = "serviceAccount:${var.service_account_email}"
+  member = "serviceAccount:${var.service_account_email  project = var.project_id
+}"
 }

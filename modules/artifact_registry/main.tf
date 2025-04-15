@@ -5,4 +5,5 @@ resource "google_artifact_registry_repository" "django_repo" {
   repository_id    = var.repo_name
   description      = "Django container repo"
   format           = "DOCKER"
+  project = var.project_id
 }

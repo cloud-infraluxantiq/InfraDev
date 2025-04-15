@@ -73,6 +73,7 @@ module "jenkins_ci" {
 
 resource "google_pubsub_topic" "cleanup_trigger" {
   name = "luxantiq-cleanup-topic"
+  project = var.project_id
 }
 
 resource "google_cloud_scheduler_job" "cleanup_job" {
@@ -83,7 +84,8 @@ resource "google_cloud_scheduler_job" "cleanup_job" {
 
   pubsub_target {
     topic_name = google_pubsub_topic.cleanup_trigger.id
-    data       = base64encode("{"task":"cleanup-temp"}")
+    data       = base64encode("{"task":"cleanup-temp"  project = var.project_id
+}")
   }
 }
 
@@ -100,6 +102,7 @@ resource "google_storage_bucket_iam_binding" "terraform_state_lock" {
   members = [
     "serviceAccount:terraform-deployer@cloud-infra-dev.iam.gserviceaccount.com"
   ]
+  project = var.project_id
 }
 
 resource "google_storage_bucket" "terraform_state" {
@@ -108,7 +111,8 @@ resource "google_storage_bucket" "terraform_state" {
   uniform_bucket_level_access = true
   versioning {
     enabled = true
-  }
+    project = var.project_id
+}
 
   # Optional: use a CMEK for encryption
   encryption {
@@ -132,7 +136,8 @@ resource "google_monitoring_uptime_check_config" "api_uptime_check" {
     port         = 443
     use_ssl      = true
     validate_ssl = true
-  }
+    project = var.project_id
+}
 
   monitored_resource {
     type   = "uptime_url"
@@ -157,7 +162,8 @@ resource "google_monitoring_alert_policy" "uptime_alert" {
       aggregations {
         alignment_period   = "60s"
         per_series_aligner = "ALIGN_MEAN"
-      }
+        project = var.project_id
+}
     }
   }
 

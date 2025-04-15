@@ -10,7 +10,8 @@ resource "google_cloud_run_service" "django" {
         resources {
           limits = {
             memory = var.memory_limit
-          }
+            project = var.project_id
+}
         }
         env {
           for k, v in var.secret_env_vars : {
