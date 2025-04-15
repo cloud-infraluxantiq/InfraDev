@@ -1,0 +1,20 @@
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/backend/django:latest', '.']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/backend/django:latest']
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      [
+        'run', 'deploy', 'django-api',
+        '--image=us-central1-docker.pkg.dev/$PROJECT_ID/backend/django:latest',
+        '--region=us-central1',
+        '--platform=managed',
+        '--allow-unauthenticated',
+        '--add-cloudsql-instances=YOUR_CONNECTION_NAME',
+        '--set-secrets=DB_PASSWORD=db_password_secret:latest,JWT_SECRET=jwt_secret_key:latest'
+      ]
