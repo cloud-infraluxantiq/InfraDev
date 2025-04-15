@@ -1,10 +1,21 @@
 
-variable "secrets" {
-  description = "Map of secrets with data, labels, annotations, and IAM access"
-  type = map(object({
-    value       = string
-    labels      = map(string)
-    annotations = map(string)
-    accessors   = list(string)
-  }))
+variable "db_password" {
+  description = "The database password stored in Secret Manager"
+  type        = string
+}
+
+variable "jwt_secret" {
+  description = "JWT signing key"
+  type        = string
+}
+
+
+variable "db_password" {
+  description = "The database password for Django, stored in Secret Manager"
+  type        = string
+}
+
+variable "jwt_secret" {
+  description = "JWT secret key for user authentication"
+  type        = string
 }

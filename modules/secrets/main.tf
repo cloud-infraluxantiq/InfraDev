@@ -1,33 +1,49 @@
 
-resource "google_secret_manager_secret" "secrets" {
-  for_each = var.secrets
-
-  secret_id = each.key
+resource "google_secret_manager_secret" "db_password_secret" {
+  secret_id = "db_password_secret"
   replication {
     automatic = true
   }
-
-  labels = each.value.labels
-  annotations = each.value.annotations
 }
 
-resource "google_secret_manager_secret_version" "secret_versions" {
-  for_each = var.secrets
-
-  secret      = google_secret_manager_secret.secrets[each.key].id
-  secret_data = each.value.value
+resource "google_secret_manager_secret_version" "db_password_secret_version" {
+  secret      = google_secret_manager_secret.db_password_secret.id
+  secret_data = var.db_password
 }
 
-resource "google_secret_manager_secret_iam_member" "access" {
-  for_each = {
-    for key, val in var.secrets :
-    key => {
-      secret  = key
-      members = val.accessors
-    }
+resource "google_secret_manager_secret" "jwt_secret_key" {
+  secret_id = "jwt_secret_key"
+  replication {
+    automatic = true
   }
+}
 
-  secret_id = google_secret_manager_secret.secrets[each.key].id
-  role      = "roles/secretmanager.secretAccessor"
-  member    = each.value.members
+resource "google_secret_manager_secret_version" "jwt_secret_key_version" {
+  secret      = google_secret_manager_secret.jwt_secret_key.id
+  secret_data = var.jwt_secret
+}
+
+
+resource "google_secret_manager_secret" "db_password_secret" {
+  secret_id = "db_password_secret"
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "db_password_secret_version" {
+  secret      = google_secret_manager_secret.db_password_secret.id
+  secret_data = var.db_password
+}
+
+resource "google_secret_manager_secret" "jwt_secret_key" {
+  secret_id = "jwt_secret_key"
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "jwt_secret_key_version" {
+  secret      = google_secret_manager_secret.jwt_secret_key.id
+  secret_data = var.jwt_secret
 }
