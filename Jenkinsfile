@@ -1,27 +1,35 @@
-
 pipeline {
   agent {
     docker {
+      // Use the Docker-in-Docker image for container builds
       image 'gcr.io/cloud-builders/docker'
       args '-v /var/run/docker.sock:/var/run/docker.sock'
     }
   }
 
   environment {
-    PROJECT_ID = 'cloud-infra-dev'
-    REGION     = 'asia-south1'
-    DJANGO_IMAGE = "gcr.io/${PROJECT_ID}/djangoapi:latest"
+    // Project metadata
+    PROJECT_ID  = 'cloud-infra-dev'
+    REGION      = 'asia-south1'
+
+    // Fully qualified Artifact Registry image names
+    DJANGO_IMAGE  = "gcr.io/${PROJECT_ID}/djangoapi:latest"
     ANGULAR_IMAGE = "gcr.io/${PROJECT_ID}/angularfrontend:latest"
-    GOOGLE_APPLICATION_CREDENTIALS = credentials('gcp-service-account-json') // Jenkins secret
+
+    // Jenkins credential ID for GCP service account key (stored as secret file)
+    GOOGLE_APPLICATION_CREDENTIALS = credentials('gcp-service-account-json')
   }
 
   stages {
+
+    // Pull source code from Git
     stage('Checkout') {
       steps {
         checkout scm
       }
     }
 
+    // Build Docker image for Django backend
     stage('Build Django Image') {
       steps {
         dir('backend') {
@@ -30,6 +38,7 @@ pipeline {
       }
     }
 
+    // Build Docker image for Angular frontend
     stage('Build Angular Image') {
       steps {
         dir('frontend') {
@@ -38,6 +47,7 @@ pipeline {
       }
     }
 
+    // Push both images to Artifact Registry
     stage('Push Images') {
       steps {
         sh 'gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS'
@@ -47,6 +57,8 @@ pipeline {
       }
     }
 
+    // (Optional) Deploy Terraform infrastructure
+    // NOTE: You can disable this by renaming or excluding the directory
     stage('Deploy (Optional)') {
       when {
         expression { return fileExists('InfraDev/InfraDev/main.tf') }
@@ -63,10 +75,10 @@ pipeline {
 
   post {
     failure {
-      echo 'Pipeline failed!'
+      echo '❌ oops...Pipeline failed!'
     }
     success {
-      echo '✅ Build + Deploy Successful!'
+      echo '✅ Congrats luxantiq dev team the Build and Deploy was  Successful . Please take a break !'
     }
   }
 }

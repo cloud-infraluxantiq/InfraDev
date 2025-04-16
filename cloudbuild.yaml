@@ -1,20 +1,37 @@
 
+# cloudbuild.yaml
+# -------------------------
+# This CI pipeline:
+# 1. Builds Django Docker image
+# 2. Pushes it to Artifact Registry
+# 3. Deploys it to Cloud Run with IAM-based auth (secured by Firebase)
+
 steps:
+  # Step 1: Build Django backend Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/backend/django:latest', '.']
+    args: [
+      'build',
+      '-t', 'asia-south1-docker.pkg.dev/$PROJECT_ID/backend/django:latest',
+      '.'
+    ]
 
+  # Step 2: Push the image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/backend/django:latest']
+    args: [
+      'push',
+      'asia-south1-docker.pkg.dev/$PROJECT_ID/backend/django:latest'
+    ]
 
+  # Step 3: Deploy to Cloud Run (Firebase Auth enabled — no unauthenticated access)
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
       [
-        'run', 'deploy', 'django-api',
-        '--image=us-central1-docker.pkg.dev/$PROJECT_ID/backend/django:latest',
-        '--region=us-central1',
+        'run', 'deploy', 'DjangoAPI',
+        '--image=asia-south1-docker.pkg.dev/$PROJECT_ID/backend/django:latest',
+        '--region=asia-south1',
         '--platform=managed',
-        '--allow-unauthenticated',
-        '--add-cloudsql-instances=YOUR_CONNECTION_NAME',
-        '--set-secrets=DB_PASSWORD=db_password_secret:latest,JWT_SECRET=jwt_secret_key:latest'
+        # '--allow-unauthenticated',  # ❌ Removed: secured by Firebase + IAM
+        '--add-cloudsql-instances=luxantiq-dev-sql:asia-south1:luxantiq-dev-sql',
+        '--set-secrets=DB_PASSWORD=dev-db-password:latest,JWT_SECRET=dev-jwt-secret:latest'
       ]

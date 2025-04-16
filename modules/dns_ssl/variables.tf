@@ -1,15 +1,28 @@
+############################################################
+# Input Variables for DNS + SSL + Forwarding Rule
+# Used by Luxantiq to bind custom domains to HTTPS Load Balancer
+############################################################
 
-variable "domain_name" {
-  description = "The custom domain name (e.g., app.example.com)"
+# GCP Project ID
+variable "project_id" {
   type        = string
+  description = "Google Cloud project ID for provisioning resources"
 }
 
+# Domain names to configure (Angular, Django, Jenkins)
+variable "domain_names" {
+  type        = list(string)
+  description = "List of FQDNs to create A records and SSL certificates for"
+}
+
+# Name of Cloud DNS managed zone
 variable "dns_zone" {
-  description = "Cloud DNS managed zone name"
   type        = string
+  description = "Pre-created Cloud DNS zone to update A records"
 }
 
-variable "backend_instance_group" {
-  description = "Backend instance group for the Load Balancer"
+# URL map self-link (from Load Balancer module)
+variable "url_map" {
   type        = string
+  description = "Self-link of the URL map for the HTTPS proxy"
 }
