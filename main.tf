@@ -41,6 +41,14 @@ module "storage" {
   region     = var.region
 }
 
+module "lb" {
+  source                = "./modules/lb"
+  project_id            = var.project_id
+  region                = var.region
+  angular_service_name  = var.cloud_run_angular_service_name
+  django_service_name   = var.cloud_run_django_service_name
+}
+
 module "dns_ssl" {
   source     = "./modules/dns_ssl"
   project_id = var.project_id
