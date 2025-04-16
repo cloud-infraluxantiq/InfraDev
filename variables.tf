@@ -89,6 +89,17 @@ variable "gcs_service_key_secret" {
   description = "Base64-encoded GCS service account key"
 }
 
+variable "service_accounts" {
+  description = "Map of service accounts and their role assignments"
+  type = map(object({
+    display_name = string
+    description  = string
+    role         = string
+    create_key   = bool
+  }))
+}
+
+
 variable "razorpay_api_key_secret" {
   type        = string
   default     = "dev-razorpay-api-key"
@@ -115,13 +126,6 @@ variable "django_domain" {
   default     = "api.dev.django.luxantiq.com"
   description = "Domain for the Django API backend"
 }
-
-variable "jenkins_domain" {
-  type        = string
-  default     = "jenkins.dev.luxantiq.com"
-  description = "Domain mapped to Jenkins on GCE"
-}
-
 # --------------------------
 # Cloud Run Service Names
 # --------------------------

@@ -75,13 +75,6 @@ module "monitoring" {
   project_id = var.project_id
   region     = var.region
 }
-
-module "jenkins_ci" {
-  source     = "./modules/jenkins_ci"
-  project_id = var.project_id
-  region     = var.region
-}
-
 # -----------------------------------------
 # Cloud Scheduler + Pub/Sub for automation
 # -----------------------------------------
