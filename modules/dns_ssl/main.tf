@@ -1,37 +1,32 @@
 ############################################################
-# Luxantiq DNS + HTTPS SSL Setup for Custom Domains
-# - Provisions global IP for Load Balancer
-# - Configures managed SSL certificate for subdomains
-# - Adds DNS A records using Cloud DNS
-# - Configures HTTPS proxy and forwarding rules
+# Luxantiq DNS + HTTPS SSL Module (Cleaned)
+# Handles:
+# - Global static IP
+# - Managed SSL certificate
+# - DNS A records
+# - HTTPS forwarding rule (proxy is external)
 ############################################################
 
-# ----------------------------------------
-# Global Static IP for HTTPS Load Balancer
-# ----------------------------------------
+# Global Static IP (used for A records and forwarding)
 resource "google_compute_global_address" "lb_ip" {
   name    = "luxantiq-global-ip"
   project = var.project_id
 }
 
-# --------------------------------------------------
-# Managed SSL Certificate for Angular, Django, Jenkins
-# --------------------------------------------------
+# Managed SSL Certificate for all domains
 resource "google_compute_managed_ssl_certificate" "ssl_cert" {
   name    = "luxantiq-ssl-cert"
   project = var.project_id
 
   managed {
-    domains = var.domain_names  # Example: ["shop.dev.angular...", "api.dev.django...", "jenkins.dev..."]
+    domains = var.domain_names
   }
 }
 
-# --------------------------------------------------
-# Cloud DNS A Records — one per domain
-# --------------------------------------------------
+# DNS A Records — One per domain
 resource "google_dns_record_set" "a_records" {
   for_each     = toset(var.domain_names)
-  name         = "${each.value}."  # FQDN must end with a dot
+  name         = "${each.value}."
   type         = "A"
   ttl          = 300
   managed_zone = var.dns_zone
@@ -39,19 +34,15 @@ resource "google_dns_record_set" "a_records" {
   project      = var.project_id
 }
 
-# --------------------------------------------------
-# Target HTTPS Proxy connects URL Map to SSL Cert
-# --------------------------------------------------
+# Target HTTPS Proxy
 resource "google_compute_target_https_proxy" "https_proxy" {
   name             = "luxantiq-https-proxy"
-  url_map          = var.url_map  # Passed from LB module (e.g., backend routing)
+  url_map          = var.url_map
   ssl_certificates = [google_compute_managed_ssl_certificate.ssl_cert.self_link]
   project          = var.project_id
 }
 
-# --------------------------------------------------
-# Global Forwarding Rule: Routes HTTPS traffic to proxy
-# --------------------------------------------------
+# Global Forwarding Rule
 resource "google_compute_global_forwarding_rule" "https_forwarding" {
   name       = "luxantiq-https-forwarding-rule"
   ip_address = google_compute_global_address.lb_ip.address
