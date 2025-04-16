@@ -34,3 +34,9 @@ service_accounts = {
     create_key   = false  # No key needed (Cloud Scheduler uses default runtime identity)
   }
 }
+##########################################
+# Artifact Registry: Repository Name
+# This name is passed into the module to define the Docker repo
+##########################################
+
+repo_name = "djangoapi"
