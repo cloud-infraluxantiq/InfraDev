@@ -2,11 +2,9 @@
 # Google Provider Setup
 # ------------------------
 provider "google" {
-  credentials = file("terraform-sa-key.json")
-  project     = var.project_id
-  region      = var.region
+  project = var.project_id
+  region  = var.region
 }
-
 # ------------------------
 # Core Infrastructure Modules
 # ------------------------

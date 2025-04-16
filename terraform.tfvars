@@ -52,7 +52,6 @@ razorpay_api_secret = "your_razorpay_api_secret"
 # ------------------------
 # GCS Service Account Key (Base64)
 # ------------------------
-gcs_service_key = "your_base64_encoded_service_account_key"
 
 # ------------------------
 # Jenkins VM Configuration
