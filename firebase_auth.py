@@ -38,7 +38,7 @@ class FirebaseAuthMiddleware(MiddlewareMixin):
             # No token found — mark request as anonymous
             request.firebase_user = None
 
-
+# below should be included as part of Django app settings.py
 #MIDDLEWARE = [
   #  ...
  #   'your_app.middleware.firebase_auth.FirebaseAuthMiddleware',
