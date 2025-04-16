@@ -1,23 +1,88 @@
 ##########################################
 # Luxantiq Terraform Variable Values
-# These values will override the defaults
-# in variables.tf during provisioning.
+# These values override defaults in variables.tf during provisioning.
 ##########################################
 
-# Google Cloud project ID and region
+# ------------------------
+# Google Cloud Project & Region
+# ------------------------
 project_id = "cloud-infra-dev"
 region     = "asia-south1"
+zone       = "asia-south1-b"
 
-##########################################
+# ------------------------
+# Cloud Run Services
+# ------------------------
+cloud_run_django_service_name  = "DjangoAPI"
+cloud_run_angular_service_name = "AngularFrontend"
+
+# ------------------------
+# Domain Names (DNS + SSL)
+# ------------------------
+angular_domain  = "shop.dev.angular.luxantiq.com"
+django_domain   = "api.dev.django.luxantiq.com"
+jenkins_domain  = "jenkins.dev.luxantiq.com"
+
+# ------------------------
+# Firebase Authentication (via Secret Manager)
+# ------------------------
+firebase_api_key      = "your_firebase_api_key"
+firebase_project_id   = "your_firebase_project_id"
+firebase_auth_domain  = "your_firebase_auth_domain"
+
+# ------------------------
+# PostgreSQL DB Configuration
+# ------------------------
+db_name     = "dev_luxantiq"
+db_user     = "your_postgres_username"
+db_password = "your_postgres_password"
+
+# ------------------------
+# Django Auth Secrets
+# ------------------------
+jwt_secret        = "your_jwt_secret"
+django_secret_key = "your_django_secret_key"
+
+# ------------------------
+# Razorpay Keys
+# ------------------------
+razorpay_api_key    = "your_razorpay_api_key"
+razorpay_api_secret = "your_razorpay_api_secret"
+
+# ------------------------
+# GCS Service Account Key (Base64)
+# ------------------------
+gcs_service_key = "your_base64_encoded_service_account_key"
+
+# ------------------------
+# Jenkins VM Configuration
+# ------------------------
+machine_type          = "e2-micro"
+network               = "default"
+subnet                = null
+service_account_email = null
+
+# ------------------------
+# Terraform Remote State
+# ------------------------
+state_bucket_name        = "terraform-state-luxantiq-dev"
+enable_terraform_locking = true
+
+# ------------------------
+# Optional Features
+# ------------------------
+enable_scheduler = true
+
+# ------------------------
 # IAM: Service Accounts & Role Bindings
-##########################################
-
+# Used by Terraform, Jenkins, Cloud Scheduler
+# ------------------------
 service_accounts = {
   terraform-deployer = {
     display_name = "Terraform Deployer"
     description  = "Used by Terraform to manage GCP infrastructure"
     role         = "roles/editor"
-    create_key   = true  # Key exported for use in automation (e.g., tf-auth.sh)
+    create_key   = true
   }
 
   jenkins-agent = {
@@ -31,12 +96,11 @@ service_accounts = {
     display_name = "Scheduler Executor"
     description  = "Used by Cloud Scheduler to trigger Pub/Sub"
     role         = "roles/pubsub.publisher"
-    create_key   = false  # No key needed (Cloud Scheduler uses default runtime identity)
+    create_key   = false
   }
 }
-##########################################
-# Artifact Registry: Repository Name
-# This name is passed into the module to define the Docker repo
-##########################################
 
+# ------------------------
+# Artifact Registry
+# ------------------------
 repo_name = "djangoapi"
