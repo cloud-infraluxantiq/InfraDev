@@ -98,6 +98,7 @@ resource "google_cloud_scheduler_job" "cleanup_job" {
 # ---------------------------------------------------
 # Terraform State: Remote Bucket with Locking + CMEK
 # ---------------------------------------------------
+
 resource "google_storage_bucket" "terraform_state" {
   name                        = "luxantiq-terraform-state"
   location                    = var.region
@@ -107,9 +108,9 @@ resource "google_storage_bucket" "terraform_state" {
     enabled = true
   }
 
-  # Encrypt using your KMS key
+  # CMEK encryption using KMS key in asia-south1
   encryption {
-    default_kms_key_name = "projects/cloud-infra-dev/locations/global/keyRings/terraform-secrets/cryptoKeys/state-key"
+    default_kms_key_name = "projects/cloud-infra-dev/locations/asia-south1/keyRings/terraform-secrets/cryptoKeys/state-key"
   }
 
   project = var.project_id
@@ -126,6 +127,14 @@ resource "google_storage_bucket_iam_binding" "terraform_state_lock" {
   project = var.project_id
 }
 
+# -----------------------------------------------------
+# CMEK Permission: Allow GCS to use the encryption key
+# -----------------------------------------------------
+resource "google_kms_crypto_key_iam_member" "gcs_storage_encrypter" {
+  crypto_key_id = "projects/${var.project_id}/locations/asia-south1/keyRings/terraform-secrets/cryptoKeys/state-key"
+  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  member        = "serviceAccount:service-${var.project_number}@gs-project-accounts.iam.gserviceaccount.com"
+}
 # -----------------------------------------------------
 # Monitoring: Uptime Check + Alerting on Django API
 # -----------------------------------------------------
