@@ -1,21 +1,21 @@
 ############################################################
-# Outputs: DNS + SSL Module (Luxantiq)
-# Exposes global IP, SSL cert, and forwarding rule
+# Outputs: DNS + SSL Module
+# Exposes useful references for verification, reuse, or CI/CD
 ############################################################
 
-# Global IP address of the Load Balancer
+# Static Global IP used for DNS A records and forwarding rule
 output "load_balancer_ip" {
-  description = "Global static IP for HTTPS Load Balancer"
+  description = "Static global IP address for the HTTPS Load Balancer"
   value       = google_compute_global_address.lb_ip.address
 }
 
-# SSL certificate self-link
+# Self-link of the managed SSL certificate (auto-renewing)
 output "ssl_certificate_id" {
-  description = "Self-link of the managed SSL certificate for custom domains"
+  description = "Managed SSL certificate self-link for HTTPS proxy"
   value       = google_compute_managed_ssl_certificate.ssl_cert.id
 }
 
-# HTTPS forwarding rule (entry point to LB)
+# Global HTTPS forwarding rule
 output "forwarding_rule_url" {
   description = "Self-link of the global HTTPS forwarding rule"
   value       = google_compute_global_forwarding_rule.https_forwarding.self_link
