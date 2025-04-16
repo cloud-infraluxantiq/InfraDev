@@ -44,7 +44,16 @@ module "storage" {
 module "dns_ssl" {
   source     = "./modules/dns_ssl"
   project_id = var.project_id
-  region     = var.region
+
+  dns_zone = "luxantiq-com-zone"
+
+  domain_names = [
+    "shop.dev.angular.luxantiq.com",
+    "api.dev.django.luxantiq.com",
+    "jenkins.dev.luxantiq.com"
+  ]
+
+  url_map = module.lb.url_map_self_link
 }
 
 module "secrets" {
