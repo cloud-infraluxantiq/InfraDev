@@ -1,1 +1,46 @@
 
+Luxantiq Terraform Infrastructure Configuration Summary
+========================================================
+
+🌍 Project & Region
+-------------------
+Project ID  : cloud-infra-dev
+Region      : asia-south1
+
+🌐 Domains
+----------
+Frontend (Angular) : shop.dev.angular.luxantiq.com
+Backend (Django)   : api.dev.django.luxantiq.com
+Jenkins CI/CD      : jenkins.dev.luxantiq.com
+
+🚀 Application Names
+---------------------
+Backend  : DjangoAPI
+Frontend : AngularFrontend
+
+🐘 Database Configuration
+--------------------------
+Cloud SQL Instance Name : luxantiq-dev-sql
+PostgreSQL DB Name      : dev_luxantiq
+
+🔐 Secrets (in Secret Manager)
+------------------------------
+dev-db-password         : PostgreSQL DB password
+dev-db-user             : DB user (if not postgres)
+dev-jwt-secret          : JWT signing key for Django
+dev-firebase-api-key    : Firebase config API key for Angular
+dev-firebase-project-id : Firebase project ID
+dev-firebase-auth-domain: Firebase auth domain
+dev-django-secret-key   : Django SECRET_KEY
+dev-razorpay-api-key    : Razorpay public key
+dev-razorpay-api-secret : Razorpay private key
+dev-gcs-service-key     : Base64 encoded GCP service account key
+
+🪣 Cloud Storage Buckets
+-------------------------
+luxantiq-dev-product-media     : Product images & thumbnails
+luxantiq-dev-customer-uploads  : User-uploaded content
+luxantiq-dev-static-assets     : Frontend assets (optional)
+luxantiq-dev-invoices          : Invoices & order docs (private)
+luxantiq-dev-backups           : Coldline backups (optional)
+luxantiq-dev-temp              : Temp files (auto-deleted in 7d)
