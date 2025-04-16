@@ -1,3 +1,12 @@
+###############################################
+# Luxantiq Terraform Infrastructure Variables
+# These variables are referenced across all modules
+# and represent secrets, resource names, and domains.
+###############################################
+
+# --------------------------
+# Core Project Configuration
+# --------------------------
 variable "project_id" {
   type        = string
   description = "The ID of the Google Cloud project"
@@ -5,23 +14,26 @@ variable "project_id" {
 
 variable "region" {
   type        = string
-  description = "The primary region for resources"
+  description = "Primary region for all GCP resources"
   default     = "asia-south1"
 }
 
 variable "project_number" {
   type        = string
-  description = "The numeric ID of the project (used in IAM policies, bindings)"
+  description = "The numeric project ID (used in IAM bindings, policies)"
 }
 
+# -------------------------------
+# Firebase Authentication Config
+# -------------------------------
 variable "firebase_project_id" {
   type        = string
-  description = "Firebase Project ID for Auth"
+  description = "Firebase Project ID (used in frontend & auth bindings)"
 }
 
 variable "firebase_auth_domain" {
   type        = string
-  description = "Firebase Auth domain (e.g. your-app.firebaseapp.com)"
+  description = "Firebase Auth domain (e.g., your-app.firebaseapp.com)"
 }
 
 variable "firebase_api_key" {
@@ -29,18 +41,24 @@ variable "firebase_api_key" {
   description = "Firebase Web API key"
 }
 
+# -------------------------------
+# Cloud SQL Configuration (Postgres)
+# -------------------------------
 variable "cloud_sql_instance_name" {
   type        = string
   default     = "luxantiq-dev-sql"
-  description = "Name of the Cloud SQL instance"
+  description = "Cloud SQL instance name"
 }
 
 variable "db_name" {
   type        = string
   default     = "dev_luxantiq"
-  description = "PostgreSQL database name"
+  description = "PostgreSQL DB name"
 }
 
+# ------------------------
+# Secret Manager References
+# ------------------------
 variable "db_user_secret" {
   type        = string
   default     = "dev-db-user"
@@ -56,37 +74,40 @@ variable "db_password_secret" {
 variable "jwt_secret_secret" {
   type        = string
   default     = "dev-jwt-secret"
-  description = "Secret Manager entry for JWT signing secret"
+  description = "JWT signing secret for Django (from Secret Manager)"
 }
 
 variable "django_secret_key_secret" {
   type        = string
   default     = "dev-django-secret-key"
-  description = "Secret Manager entry for Django SECRET_KEY"
+  description = "Django SECRET_KEY (from Secret Manager)"
 }
 
 variable "gcs_service_key_secret" {
   type        = string
   default     = "dev-gcs-service-key"
-  description = "Secret Manager entry for GCS service account base64 key"
+  description = "Base64-encoded GCS service account key"
 }
 
 variable "razorpay_api_key_secret" {
   type        = string
   default     = "dev-razorpay-api-key"
-  description = "Secret Manager entry for Razorpay public key"
+  description = "Razorpay public API key (from Secret Manager)"
 }
 
 variable "razorpay_api_secret_secret" {
   type        = string
   default     = "dev-razorpay-api-secret"
-  description = "Secret Manager entry for Razorpay private key"
+  description = "Razorpay private key/secret"
 }
 
+# -------------------------------
+# Domain Names (Frontend/Backend)
+# -------------------------------
 variable "angular_domain" {
   type        = string
   default     = "shop.dev.angular.luxantiq.com"
-  description = "Domain for the Angular frontend"
+  description = "Domain for the Angular frontend (Cloud Run)"
 }
 
 variable "django_domain" {
@@ -98,35 +119,44 @@ variable "django_domain" {
 variable "jenkins_domain" {
   type        = string
   default     = "jenkins.dev.luxantiq.com"
-  description = "Domain for the Jenkins UI"
+  description = "Domain mapped to Jenkins on GCE"
 }
 
+# --------------------------
+# Cloud Run Service Names
+# --------------------------
 variable "cloud_run_django_service_name" {
   type        = string
   default     = "DjangoAPI"
-  description = "Cloud Run service name for Django"
+  description = "Cloud Run service name for Django API"
 }
 
 variable "cloud_run_angular_service_name" {
   type        = string
   default     = "AngularFrontend"
-  description = "Cloud Run service name for Angular"
+  description = "Cloud Run service name for Angular frontend"
 }
 
+# --------------------------
+# Terraform State Management
+# --------------------------
 variable "state_bucket_name" {
   type        = string
   default     = "terraform-state-luxantiq-dev"
-  description = "Name of the bucket storing Terraform state"
+  description = "GCS bucket name for storing Terraform state"
 }
 
 variable "enable_terraform_locking" {
   type        = bool
   default     = true
-  description = "Enable Dynamo-style Terraform state locking"
+  description = "Enable bucket-level locking for Terraform state"
 }
 
+# --------------------------
+# Optional Feature Flags
+# --------------------------
 variable "enable_scheduler" {
   type        = bool
   default     = true
-  description = "Whether to provision Cloud Scheduler jobs"
+  description = "Enable Cloud Scheduler + Pub/Sub for automation"
 }
