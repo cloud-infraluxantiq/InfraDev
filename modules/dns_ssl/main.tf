@@ -1,9 +1,9 @@
 ############################################################
 # Luxantiq DNS + HTTPS SSL Setup for Custom Domains
-# - Provisions a global IP
-# - Configures managed SSL for multiple subdomains
-# - Adds DNS A records to Cloud DNS
-# - Connects HTTPS LB forwarding rule to your custom domains
+# - Provisions global IP for Load Balancer
+# - Configures managed SSL certificate for subdomains
+# - Adds DNS A records using Cloud DNS
+# - Configures HTTPS proxy and forwarding rules
 ############################################################
 
 # ----------------------------------------
@@ -22,16 +22,16 @@ resource "google_compute_managed_ssl_certificate" "ssl_cert" {
   project = var.project_id
 
   managed {
-    domains = var.domain_names  # List of domains: [angular, django, jenkins]
+    domains = var.domain_names  # Example: ["shop.dev.angular...", "api.dev.django...", "jenkins.dev..."]
   }
 }
 
 # --------------------------------------------------
-# Cloud DNS A Records — one for each domain
+# Cloud DNS A Records — one per domain
 # --------------------------------------------------
 resource "google_dns_record_set" "a_records" {
   for_each     = toset(var.domain_names)
-  name         = "${each.value}."  # Must end with a dot for FQDN
+  name         = "${each.value}."  # FQDN must end with a dot
   type         = "A"
   ttl          = 300
   managed_zone = var.dns_zone
@@ -44,13 +44,13 @@ resource "google_dns_record_set" "a_records" {
 # --------------------------------------------------
 resource "google_compute_target_https_proxy" "https_proxy" {
   name             = "luxantiq-https-proxy"
-  url_map          = var.url_map  # Passed from Load Balancer module
+  url_map          = var.url_map  # Passed from LB module (e.g., backend routing)
   ssl_certificates = [google_compute_managed_ssl_certificate.ssl_cert.self_link]
   project          = var.project_id
 }
 
 # --------------------------------------------------
-# Global Forwarding Rule: Routes port 443 to HTTPS proxy
+# Global Forwarding Rule: Routes HTTPS traffic to proxy
 # --------------------------------------------------
 resource "google_compute_global_forwarding_rule" "https_forwarding" {
   name       = "luxantiq-https-forwarding-rule"
