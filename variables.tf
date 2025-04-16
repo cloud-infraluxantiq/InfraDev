@@ -126,13 +126,6 @@ variable "django_domain" {
   default     = "api.dev.django.luxantiq.com"
   description = "Domain for the Django API backend"
 }
-
-variable "jenkins_domain" {
-  type        = string
-  default     = "jenkins.dev.luxantiq.com"
-  description = "Domain mapped to Jenkins on GCE"
-}
-
 # --------------------------
 # Cloud Run Service Names
 # --------------------------
