@@ -13,6 +13,5 @@ terraform {
     prefix = "state"
 
     # Optional: Customer-managed encryption key for added security
-    encryption_key = "projects/cloud-infra-dev/locations/global/keyRings/terraform-secrets/cryptoKeys/state-key"
   }
 }
