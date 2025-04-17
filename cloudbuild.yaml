@@ -27,7 +27,7 @@ steps:
     entrypoint: gcloud
     args:
       [
-        'run', 'deploy', 'DjangoAPI',
+        'run', 'deploy', 'django-api',
         '--image=asia-south1-docker.pkg.dev/$PROJECT_ID/backend/django:latest',
         '--region=asia-south1',
         '--platform=managed',

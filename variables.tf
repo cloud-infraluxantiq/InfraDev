@@ -131,13 +131,13 @@ variable "django_domain" {
 # --------------------------
 variable "cloud_run_django_service_name" {
   type        = string
-  default     = "DjangoAPI"
+  default     = "django-api"
   description = "Cloud Run service name for Django API"
 }
 
 variable "cloud_run_angular_service_name" {
   type        = string
-  default     = "AngularFrontend"
+  default     = "angular-frontend"
   description = "Cloud Run service name for Angular frontend"
 }
 

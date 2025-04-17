@@ -137,7 +137,7 @@ resource "google_kms_crypto_key_iam_member" "gcs_storage_encrypter" {
 # Monitoring: Uptime Check + Alerting on Django API
 # -----------------------------------------------------
 resource "google_monitoring_uptime_check_config" "api_uptime_check" {
-  display_name = "DjangoAPI Uptime Check"
+  display_name = "django-api Uptime Check"
   timeout      = "10s"
   period       = "60s"
 
@@ -160,11 +160,11 @@ resource "google_monitoring_uptime_check_config" "api_uptime_check" {
 }
 
 resource "google_monitoring_alert_policy" "uptime_alert" {
-  display_name = "DjangoAPI Uptime Alert"
+  display_name = "django-api Uptime Alert"
   combiner     = "OR"
 
   conditions {
-    display_name = "DjangoAPI Down"
+    display_name = "django-api Down"
     condition_threshold {
       filter          = "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" AND resource.label.\"host\"=\"${var.django_domain}\""
       duration        = "60s"

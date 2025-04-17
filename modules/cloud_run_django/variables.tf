@@ -18,7 +18,7 @@ variable "region" {
 # Name of the Cloud Run service
 variable "service_name" {
   type        = string
-  description = "Name of the Django Cloud Run service (e.g., DjangoAPI)"
+  description = "Name of the Django Cloud Run service (e.g., django-api)"
 }
 
 # Docker image to deploy (from Artifact Registry)

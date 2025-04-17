@@ -1,5 +1,5 @@
 ############################################
-# Input Variables: Angular Cloud Run Module
+# Input Variables: angular-frontend Run Module
 # These values configure the container deployment
 # and domain settings for the frontend.
 ############################################
@@ -17,10 +17,10 @@ variable "region" {
   description = "Region to deploy the Cloud Run service"
 }
 
-# Name of the Cloud Run service (default: AngularFrontend)
+# Name of the Cloud Run service (default: angular-frontend)
 variable "service_name" {
   type        = string
-  default     = "AngularFrontend"
+  default     = "angular-frontend"
   description = "Name of the Angular frontend Cloud Run service"
 }
 
