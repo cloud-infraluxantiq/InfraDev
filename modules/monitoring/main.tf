@@ -6,7 +6,7 @@
 
 # Uptime check to verify Django API (HTTPS endpoint)
 resource "google_monitoring_uptime_check_config" "django_api_uptime" {
-  display_name = "DjangoAPI Uptime Check"
+  display_name = "django-api Uptime Check"
   timeout      = "10s"
   period       = "60s"
   project      = var.project_id
