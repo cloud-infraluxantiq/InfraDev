@@ -16,24 +16,22 @@ resource "google_cloud_run_service" "django" {
         image = var.image_url
 
         resources {
-          limits = {
-            memory = var.memory_limit  # Allocate memory per container
-          }
+        limits = {
+          memory = var.memory_limit  # Allocate memory per container
         }
 
-        #  Inject secrets from Secret Manager dynamically
-        env {
-          for k, v in var.secret_env_vars : {
-            name = k
+        dynamic "env" {
+          for_each = var.secret_env_vars
+          content {
+            name = env.key
             value_from {
               secret_key_ref {
-                secret  = v
+                secret  = env.value
                 version = "latest"
               }
             }
           }
         }
-      }
 
       container_concurrency = var.concurrency       # Max simultaneous requests per container
       timeout_seconds       = var.timeout_seconds   # Request timeout limit
