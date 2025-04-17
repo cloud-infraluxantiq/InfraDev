@@ -18,6 +18,17 @@
             "assets": [],
             "styles": ["src/styles.css"],
             "scripts": []
+          },
+          "configurations": {
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "aot": false,
+              "extractLicenses": false,
+              "vendorChunk": true,
+              "buildOptimizer": false
+            }
           }
         }
       }
