@@ -31,11 +31,11 @@ jobs:
     - name: ☁️ Setup Google Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
 
-    - name: 🐳 Build Django Image
-      run: docker build -t $DJANGO_IMAGE ./backend
+    - name: Build Django Image
+      run: docker build -t $DJANGO_IMAGE ./modules/cloud_run_django
 
-    - name: 🐳 Build Angular Image
-      run: docker build -t $ANGULAR_IMAGE ./frontend
+    - name: Build Angular Image
+  run: docker build -t $ANGULAR_IMAGE ./modules/cloud_run_angular
 
     - name: 📦 Push Docker Images to Artifact Registry
       run: |
