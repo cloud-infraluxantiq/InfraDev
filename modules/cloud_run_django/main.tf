@@ -9,7 +9,7 @@ resource "google_cloud_run_service" "django" {
   name     = var.service_name
   location = var.region
   project  = var.project_id  # Ensure resource is created in correct GCP project
-
+}
   template {
     spec {
       containers {
