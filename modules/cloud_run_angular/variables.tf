@@ -17,7 +17,7 @@ variable "region" {
   description = "Region to deploy the Cloud Run service"
 }
 
-# Name of the Cloud Run service (default: AngularFrontend)
+# Name of the Cloud Run service (default: angular-frontend)
 variable "service_name" {
   type        = string
   default     = "AngularFrontend"
