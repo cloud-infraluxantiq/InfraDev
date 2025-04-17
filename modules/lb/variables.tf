@@ -15,7 +15,7 @@ variable "region" {
   description = "GCP region where Cloud Run services are deployed"
 }
 
-# Angular frontend Cloud Run service name (e.g., AngularFrontend)
+# Angular frontend Cloud Run service name (e.g., angular-frontend)
 variable "angular_service_name" {
   type        = string
   description = "Name of the Cloud Run service running Angular frontend"
