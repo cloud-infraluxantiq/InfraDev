@@ -5,52 +5,58 @@
 #- Secured via IAM(e.g., Firebase Auth)
     ############################################################ #
 resource "google_cloud_run_service" "django" {
-name     = var.service_name
-location = var.region
-project  = var.project_id
-#Ensure resource is created in correct GCP project
-}
-template {
-  spec {
-    containers {
-      image = var.image_url
+  name     = var.service_name
+  location = var.region
+  project  = var.project_id
 
-                  resources {
-        limits = {memory = var.memory_limit #Allocate memory per container}
+  template {
+    spec {
+      containers {
+        image = var.image_url
+
+        resources {
+          limits = {
+            memory = var.memory_limit  # Allocate memory per container
+          }
+        }
 
         dynamic "env" {
-          for_each = var.secret_env_vars content {
-            name = env.key value_from {
-              secret_key_ref { secret = env.value version = "latest" }
+          for_each = var.secret_env_vars
+          content {
+            name = env.key
+            value_from {
+              secret_key_ref {
+                secret  = env.value
+                version = "latest"
+              }
             }
           }
         }
 
-        container_concurrency = var.concurrency #Max simultaneous requests per
-                                    container timeout_seconds =
-            var.timeout_seconds #Request timeout limit
-# ✅ Connect to Cloud SQL via VPC Access Connector(for private IP)
-                vpc_access {
-          connector = var.vpc_connector egress = "ALL_TRAFFIC"
-        }
-      }
+        container_concurrency = var.concurrency
+        timeout_seconds       = var.timeout_seconds
 
-      metadata {
-        annotations = {
-#Required for VPC access to be recognized in Cloud Run
-          "run.googleapis.com/vpc-access-connector" =
-              var.vpc_connector "autoscaling.knative.dev/maxScale" =
-                  var.max_scale
+        vpc_access {
+          connector = var.vpc_connector
+          egress    = "ALL_TRAFFIC"
         }
       }
     }
 
-    autogenerate_revision_name = true
-
-        traffic {
-      percent = 100 latest_revision = true
+    metadata {
+      annotations = {
+        "run.googleapis.com/vpc-access-connector" = var.vpc_connector
+      }
     }
   }
+
+  autogenerate_revision_name = true
+
+  traffic {
+    percent         = 100
+    latest_revision = true
+  }
+}
 
 #-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
 #IAM Binding for Firebase Authentication
