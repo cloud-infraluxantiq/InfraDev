@@ -1,5 +1,5 @@
 ##############################################################
-# Outputs: AngularFrontend Cloud Run Deployment
+# Outputs: angular-frontend Cloud Run Deployment
 # These outputs are useful for DNS, monitoring, CI/CD triggers
 ##############################################################
 
