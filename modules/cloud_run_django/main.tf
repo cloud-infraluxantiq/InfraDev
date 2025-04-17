@@ -4,12 +4,11 @@
 #- Connects to Cloud SQL via VPC connector
 #- Secured via IAM(e.g., Firebase Auth)
     ############################################################ #
-
-    resource
-    "google_cloud_run_service"
-    "django" {
-  name = var.service_name location = var.region project =
-      var.project_id #Ensure resource is created in correct GCP project
+resource "google_cloud_run_service" "django" {
+name     = var.service_name
+location = var.region
+project  = var.project_id
+#Ensure resource is created in correct GCP project
 }
 template {
   spec {
