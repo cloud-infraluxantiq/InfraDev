@@ -5,6 +5,6 @@ COPY . .
 
 RUN npm install -g @angular/cli && \
     npm install && \
-    ng build
+    ng build --configuration=development
 
 CMD ["npx", "http-server", "dist/angular-app", "-p", "8080"]
