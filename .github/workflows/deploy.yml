@@ -1,11 +1,11 @@
-name: CI/CD - Deploy Luxantiq Infra # testing to comment it 
+name: CI/CD - Deploy Luxantiq Infra
 
 on:
-  workflow_dispatch:  # ✅ Enables manual trigger via GitHub Actions UI
+  workflow_dispatch:  # ✅ Manual trigger only (no auto-push)
 
 permissions:
   contents: read
-  id-token: write  # Needed for Workload Identity Federation
+  id-token: write  # ✅ Required for WIF authentication to GCP
 
 jobs:
   deploy:
@@ -19,59 +19,59 @@ jobs:
       ANGULAR_IMAGE: asia-south1-docker.pkg.dev/cloud-infra-dev/frontend/angularfrontend:latest
 
     steps:
-    - name: ⬇️ Checkout Source Code
-      uses: actions/checkout@v4
+      - name: ⬇️ Checkout Source Code
+        uses: actions/checkout@v4
 
-    - name: 🔐 Authenticate to Google Cloud (WIF)
-      uses: google-github-actions/auth@v1
-      with:
-        workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_PROVIDER }}
-        service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+      - name: 🔐 Authenticate to Google Cloud (WIF)
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
 
-    - name: ☁️ Setup Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
+      - name: ☁️ Setup Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
 
-    - name: Build Django Image
-      run: docker build -t $DJANGO_IMAGE ./modules/cloud_run_django
+      - name: 🐳 Build Django Image
+        run: docker build -t $DJANGO_IMAGE ./modules/cloud_run_django
 
-    - name: Build Angular Image
-  run: docker build -t $ANGULAR_IMAGE ./modules/cloud_run_angular
+      - name: 🐳 Build Angular Image
+        run: docker build -t $ANGULAR_IMAGE ./modules/cloud_run_angular  # ✅ Indentation fixed here
 
-    - name: 📦 Push Docker Images to Artifact Registry
-      run: |
-        gcloud auth configure-docker asia-south1-docker.pkg.dev --quiet
-        docker push $DJANGO_IMAGE
-        docker push $ANGULAR_IMAGE
+      - name: 📦 Push Docker Images to Artifact Registry
+        run: |
+          gcloud auth configure-docker asia-south1-docker.pkg.dev --quiet
+          docker push $DJANGO_IMAGE
+          docker push $ANGULAR_IMAGE
 
-    - name: 🚀 Deploy Django to Cloud Run (secured with Firebase)
-      run: |
-        gcloud run deploy DjangoAPI \
-          --project=$PROJECT_ID \
-          --region=$REGION \
-          --platform=managed \
-          --image=$DJANGO_IMAGE \
-          --no-allow-unauthenticated \
-          --set-env-vars=FIREBASE_AUTH=true \
-          --quiet
+      - name: 🚀 Deploy Django to Cloud Run (secured with Firebase)
+        run: |
+          gcloud run deploy DjangoAPI \
+            --project=$PROJECT_ID \
+            --region=$REGION \
+            --platform=managed \
+            --image=$DJANGO_IMAGE \
+            --no-allow-unauthenticated \
+            --set-env-vars=FIREBASE_AUTH=true \
+            --quiet
 
-    - name: 🚀 Deploy Angular to Cloud Run (public)
-      run: |
-        gcloud run deploy AngularFrontend \
-          --project=$PROJECT_ID \
-          --region=$REGION \
-          --platform=managed \
-          --image=$ANGULAR_IMAGE \
-          --allow-unauthenticated \
-          --quiet
+      - name: 🚀 Deploy Angular to Cloud Run (public)
+        run: |
+          gcloud run deploy AngularFrontend \
+            --project=$PROJECT_ID \
+            --region=$REGION \
+            --platform=managed \
+            --image=$ANGULAR_IMAGE \
+            --allow-unauthenticated \
+            --quiet
 
-    - name: 🛠️ Setup Terraform CLI
-      uses: hashicorp/setup-terraform@v3
-      with:
-        terraform_version: 1.4.6
+      - name: 🛠️ Setup Terraform CLI
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.4.6
 
-    - name: 🔄 Terraform Init + Apply (Terraform Cloud)
-      working-directory: InfraDev
-      run: |
-        terraform init
-        terraform plan
-        terraform apply -auto-approve
+      - name: 🔄 Terraform Init + Apply (Terraform Cloud)
+        working-directory: InfraDev
+        run: |
+          terraform init
+          terraform plan
+          terraform apply -auto-approve
