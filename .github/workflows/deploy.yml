@@ -70,7 +70,7 @@ jobs:
           terraform_version: 1.4.6
 
       - name: 🔄 Terraform Init + Apply (Terraform Cloud)
-        working-directory: ./InfraDev
+        working-directory: ./
         run: |
           terraform init
           terraform plan
