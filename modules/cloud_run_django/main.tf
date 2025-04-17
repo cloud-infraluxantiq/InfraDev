@@ -63,11 +63,12 @@ resource "google_cloud_run_service" "django" {
 #This ensures only authenticated users / integrations
 #can invoke the Django Cloud Run service.
 #-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
-  resource
-      "google_cloud_run_service_iam_member"
-      "firebase_auth" {
-        location = var.region service =
-            google_cloud_run_service.django.name role =
+resource "google_cloud_run_service_iam_member" "firebase_auth" {
+  location = var.region
+  service  = google_cloud_run_service.django.name
+  role     = "roles/run.invoker"
+  member   = "allUsers"
+}
                 "roles/run.invoker" member =
                     var.iam_member #Example :
                         "serviceAccount:firebase-auth@project.iam."
