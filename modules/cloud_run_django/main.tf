@@ -69,16 +69,4 @@ resource "google_cloud_run_service_iam_member" "firebase_auth" {
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
-                roles/run.invoker member =
-                    var.iam_member #Example :
-                        "serviceAccount:firebase-auth@project.iam."
-                        "gserviceaccount.com" project = var.project_id
-      }
-#-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
-#Output : Cloud Run URL for Django API
-#Useful for monitoring, DNS config, and CI / CD
-#-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
-  output "cloud_run_url" {
-    value = google_cloud_run_service.django.status[0].url description =
-        "Live URL of the deployed Django Cloud Run API service"
-  }
+              
