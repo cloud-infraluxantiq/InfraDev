@@ -1,10 +1,21 @@
-# ------------------------
-# Google Provider Setup
-# ------------------------
-provider "google" {
-  project = var.project_id
-  region  = var.region
+terraform {
+  required_version = ">= 1.4.0"
+
+  cloud {
+    organization = "luxantiq"
+
+    workspaces {
+      name = "InfraDev"
+    }
+  }
 }
+
+provider "google" {
+  credentials = file("terraform-sa-key.json")
+  project     = var.project_id
+  region      = var.region
+}
+
 # ------------------------
 # Core Infrastructure Modules
 # ------------------------
@@ -55,8 +66,7 @@ module "dns_ssl" {
 
   domain_names = [
     "shop.dev.angular.luxantiq.com",
-    "api.dev.django.luxantiq.com",
-    "jenkins.dev.luxantiq.com"
+    "api.dev.django.luxantiq.com"
   ]
 
   url_map = module.lb.url_map_self_link
@@ -73,9 +83,11 @@ module "monitoring" {
   project_id = var.project_id
   region     = var.region
 }
+
 # -----------------------------------------
 # Cloud Scheduler + Pub/Sub for automation
 # -----------------------------------------
+
 resource "google_pubsub_topic" "cleanup_trigger" {
   name    = "luxantiq-cleanup-topic"
   project = var.project_id
@@ -84,7 +96,7 @@ resource "google_pubsub_topic" "cleanup_trigger" {
 resource "google_cloud_scheduler_job" "cleanup_job" {
   name        = "luxantiq-cleanup-job"
   description = "Trigger cleanup task via Pub/Sub"
-  schedule    = "0 2 * * *" # Runs daily at 2:00 AM
+  schedule    = "0 2 * * *"
   time_zone   = "Asia/Kolkata"
 
   pubsub_target {
@@ -93,51 +105,12 @@ resource "google_cloud_scheduler_job" "cleanup_job" {
   }
 }
 
-# ---------------------------------------------------
-# Terraform State: Remote Bucket with Locking + CMEK
-# ---------------------------------------------------
-
-resource "google_storage_bucket" "terraform_state" {
-  name                        = "luxantiq-terraform-state"
-  location                    = var.region
-  uniform_bucket_level_access = true
-
-  versioning {
-    enabled = true
-  }
-
-  # CMEK encryption using KMS key in asia-south1
-  encryption {
-    default_kms_key_name = "projects/cloud-infra-dev/locations/asia-south1/keyRings/terraform-secrets/cryptoKeys/state-key"
-  }
-
-  project = var.project_id
-}
-
-resource "google_storage_bucket_iam_binding" "terraform_state_lock" {
-  bucket = google_storage_bucket.terraform_state.name
-  role   = "roles/storage.admin"
-
-  members = [
-    "serviceAccount:terraform-deployer@cloud-infra-dev.iam.gserviceaccount.com"
-  ]
-
-  project = var.project_id
-}
-
-# -----------------------------------------------------
-# CMEK Permission: Allow GCS to use the encryption key
-# -----------------------------------------------------
-resource "google_kms_crypto_key_iam_member" "gcs_storage_encrypter" {
-  crypto_key_id = "projects/${var.project_id}/locations/asia-south1/keyRings/terraform-secrets/cryptoKeys/state-key"
-  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  member        = "serviceAccount:service-${var.project_number}@gs-project-accounts.iam.gserviceaccount.com"
-}
 # -----------------------------------------------------
 # Monitoring: Uptime Check + Alerting on Django API
 # -----------------------------------------------------
+
 resource "google_monitoring_uptime_check_config" "api_uptime_check" {
-  display_name = "django-api Uptime Check"
+  display_name = "DjangoAPI Uptime Check"
   timeout      = "10s"
   period       = "60s"
 
@@ -160,11 +133,11 @@ resource "google_monitoring_uptime_check_config" "api_uptime_check" {
 }
 
 resource "google_monitoring_alert_policy" "uptime_alert" {
-  display_name = "django-api Uptime Alert"
+  display_name = "DjangoAPI Uptime Alert"
   combiner     = "OR"
 
   conditions {
-    display_name = "django-api Down"
+    display_name = "DjangoAPI Down"
     condition_threshold {
       filter          = "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" AND resource.label.\"host\"=\"${var.django_domain}\""
       duration        = "60s"
@@ -178,7 +151,7 @@ resource "google_monitoring_alert_policy" "uptime_alert" {
     }
   }
 
-  notification_channels = [] # Optional: email, Slack, etc.
+  notification_channels = []
   enabled               = true
   project               = var.project_id
 }
