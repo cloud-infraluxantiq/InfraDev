@@ -74,8 +74,10 @@ jobs:
           terraform_version: 1.4.6
 
       - name: 🔄 Terraform Init + Apply (Terraform Cloud)
-        working-directory: ./
-        run: |
-          terraform init
-          terraform plan
-          terraform apply -auto-approve -input=false
+    working-directory: ./
+    run: |
+    terraform init
+    terraform workspace select "$TF_WORKSPACE" || terraform workspace new "$TF_WORKSPACE"
+    terraform plan
+    terraform apply -auto-approve
+
