@@ -45,7 +45,7 @@ jobs:
 
       - name: 🚀 Deploy Django to Cloud Run (secured with Firebase)
         run: |
-          gcloud run deploy DjangoAPI \
+          gcloud run deploy django-api \
             --project=$PROJECT_ID \
             --region=$REGION \
             --platform=managed \
@@ -56,7 +56,7 @@ jobs:
 
       - name: 🚀 Deploy Angular to Cloud Run (public)
         run: |
-          gcloud run deploy AngularFrontend \
+          gcloud run deploy angular-frontend \
             --project=$PROJECT_ID \
             --region=$REGION \
             --platform=managed \
