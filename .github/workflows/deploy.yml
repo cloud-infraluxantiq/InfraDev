@@ -75,10 +75,14 @@ jobs:
 
       - name: 🔄 Terraform Init + Apply (Terraform Cloud)
         working-directory: ./
+        env:
+          TF_WORKSPACE: InfraDev
+          TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
         run: |
           terraform init
           terraform plan
           terraform apply -auto-approve
+
 
 
 
