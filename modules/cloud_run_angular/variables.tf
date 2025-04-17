@@ -1,5 +1,5 @@
 ############################################
-# Input Variables: Angular Cloud Run Module
+# Input Variables: angular-frontend Run Module
 # These values configure the container deployment
 # and domain settings for the frontend.
 ############################################
