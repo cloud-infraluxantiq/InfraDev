@@ -69,7 +69,7 @@ resource "google_cloud_run_service_iam_member" "firebase_auth" {
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
-                "roles/run.invoker" member =
+                roles/run.invoker member =
                     var.iam_member #Example :
                         "serviceAccount:firebase-auth@project.iam."
                         "gserviceaccount.com" project = var.project_id
