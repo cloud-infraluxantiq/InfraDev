@@ -1,11 +1,10 @@
 name: CI/CD - Deploy Luxantiq Infra
-
 on:
-  workflow_dispatch:  # ✅ Manual trigger only (no auto-push)
+  workflow_dispatch:
 
 permissions:
   contents: read
-  id-token: write  # ✅ Required for WIF authentication to GCP
+  id-token: write
 
 jobs:
   deploy:
@@ -17,10 +16,8 @@ jobs:
       REGION: asia-south1
       DJANGO_IMAGE: asia-south1-docker.pkg.dev/cloud-infra-dev/backend/djangoapi:latest
       ANGULAR_IMAGE: asia-south1-docker.pkg.dev/cloud-infra-dev/frontend/angularfrontend:latest
+      TF_WORKSPACE: InfraDev
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-      TF_CLOUD_ORGANIZATION: luxantiq       # Change to your actual org if different
-      TF_WORKSPACE: InfraDev                # Your Terraform Cloud workspace name
-      TF_IN_AUTOMATION: true
 
     steps:
       - name: ⬇️ Checkout Source Code
@@ -39,7 +36,7 @@ jobs:
         run: docker build -t $DJANGO_IMAGE ./modules/cloud_run_django
 
       - name: 🐳 Build Angular Image
-        run: docker build -t $ANGULAR_IMAGE ./modules/cloud_run_angular  # ✅ Indentation fixed here
+        run: docker build -t $ANGULAR_IMAGE ./modules/cloud_run_angular
 
       - name: 📦 Push Docker Images to Artifact Registry
         run: |
@@ -75,13 +72,12 @@ jobs:
 
       - name: 🔄 Terraform Init + Apply (Terraform Cloud)
         working-directory: ./
-        env:
-          TF_WORKSPACE: InfraDev
-          TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
         run: |
           terraform init
+          terraform workspace select "$TF_WORKSPACE" || terraform workspace new "$TF_WORKSPACE"
           terraform plan
           terraform apply -auto-approve
+
 
 
 
