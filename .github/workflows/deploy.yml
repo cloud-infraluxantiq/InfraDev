@@ -74,7 +74,6 @@ jobs:
         working-directory: ./
         run: |
           terraform init
-          terraform workspace select "$TF_WORKSPACE" || terraform workspace new "$TF_WORKSPACE"
           terraform plan
           terraform apply -auto-approve
 
