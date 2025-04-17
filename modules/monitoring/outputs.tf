@@ -8,6 +8,6 @@ output "uptime_check_display_name" {
 }
 
 output "alert_policy_name" {
-  description = "Name of the alert policy for DjangoAPI"
+  description = "Name of the alert policy for django-api"
   value       = google_monitoring_alert_policy.uptime_alert.display_name
 }
