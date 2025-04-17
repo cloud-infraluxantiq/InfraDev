@@ -29,12 +29,12 @@ resource "google_monitoring_uptime_check_config" "django_api_uptime" {
 
 # Alert policy to notify when uptime check fails
 resource "google_monitoring_alert_policy" "uptime_alert" {
-  display_name = "DjangoAPI Uptime Alert"
+  display_name = "django-api Uptime Alert"
   combiner     = "OR"
   project      = var.project_id
 
   conditions {
-    display_name = "DjangoAPI Down"
+    display_name = "django-api Down"
     condition_threshold {
       filter          = "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" AND resource.label.\"host\"=\"${var.django_domain}\""
       duration        = "60s"
