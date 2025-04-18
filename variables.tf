@@ -102,14 +102,15 @@ variable "angular_secret_key_secret" {
 # Razor pay
 # --------------------------
 variable "razorpay_api_key_secret" {
+  description = "Secret Manager name for Razorpay API Key"
   type        = string
-  description = "Secret Manager name for Razorpay public key"
 }
 
 variable "razorpay_api_secret_secret" {
+  description = "Secret Manager name for Razorpay API Secret"
   type        = string
-  description = "Secret Manager name for Razorpay private key"
 }
+
 # --------------------------
 # Cloud Run Service Names
 # --------------------------
