@@ -41,7 +41,8 @@ encryption_key_name      = "projects/cloud-infra-dev/locations/asia-south1/keyRi
 db_password_secret       = "dev-db-password"
 db_user_secret           = "dev-db-user"
 jwt_secret_secret        = "dev-jwt-secret"
-django_secret_key_secret = "dev-django-secret-key"
+django_secret_key_secret  = "dev-django-secret-key"
+angular_secret_key_secret = "dev-angular-secret-key"
 
 # ------------------------
 # Firebase Config
