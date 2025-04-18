@@ -81,6 +81,7 @@ module "sql_postgres" {
   db_password_secret      = var.db_password_secret             # ✅ add this
   database_flags          = var.database_flags
   service_account_email   = var.service_account_email
+}
 # ------------------------
 # Load Balancer + SSL
 # ------------------------
