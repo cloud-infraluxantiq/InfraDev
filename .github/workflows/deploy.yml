@@ -38,7 +38,7 @@ jobs:
       - name: 🐳 Build Angular Image
         run: docker build -t $ANGULAR_IMAGE ./modules/cloud_run_angular
 
-      - name: 📦 Push Docker Images to Artifact Registry
+      - name: 📦 Push Django & Angular Images to Artifact Registry
         run: |
           gcloud auth configure-docker asia-south1-docker.pkg.dev --quiet
           docker push $DJANGO_IMAGE
@@ -71,11 +71,15 @@ jobs:
           terraform_version: 1.4.6
 
       - name: 🔄 Terraform Init + Apply (Terraform Cloud)
-        working-directory: ./
+        working-directory: ./  # or ./ if tf files are at root
+        env:
+           TF_WORKSPACE: InfraDev
+           TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+           TF_VAR_project_number: ${{ secrets.PROJECT_NUMBER }}  # 👈 This is key!
         run: |
-          terraform init
-          terraform plan
-          terraform apply -auto-approve
+           terraform init
+           terraform plan
+           terraform apply -auto-approve
 
 
 

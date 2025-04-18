@@ -22,7 +22,18 @@ variable "project_number" {
   type        = string
   description = "The numeric project ID (used in IAM bindings, policies)"
 }
+# -------------------------------
+# # Subnet and Service account emails
+# -------------------------------
+variable "subnet" {
+  description = "Subnet CIDR or name"
+  type        = string
+}
 
+variable "service_account_email" {
+  description = "Service Account Email used for IAM bindings"
+  type        = string
+}
 # -------------------------------
 # Firebase Authentication Config
 # -------------------------------
