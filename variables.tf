@@ -165,10 +165,9 @@ variable "enable_scheduler" {
   description = "Whether to provision Cloud Scheduler jobs"
 }
 variable "subnet" {
-  description = "Subnet name or configuration"
+  description = "Subnet name or configuration for VM"
   type        = string
 }
-
 variable "machine_type" {
   description = "VM instance machine type"
   type        = string
