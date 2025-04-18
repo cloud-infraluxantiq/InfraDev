@@ -212,17 +212,7 @@ variable "memory_limit" {
   type        = string
   description = "Memory allocated for the container"
 }
-
-# Docker image URL for Django (used in cloud_run_django)
-variable "django_image_url" {
-  description = "Docker image URL for Django Cloud Run"
-  type        = string
-}
-
-variable "angular_image_url" {
-  description = "Docker image URL for Angular Cloud Run"
-  type        = string
-}
+# --------------------------
 variable "db_name" {
   description = "Name of the PostgreSQL database"
   type        = string
