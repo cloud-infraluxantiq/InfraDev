@@ -121,6 +121,7 @@ nat_region           = "asia-south1"
 vpc_connector_region = "asia-south1"
 vpc_connector_cidr   = "10.8.0.0/28"
 private_network = "projects/cloud-infra-dev/global/networks/luxantiq-vpc"
+vpc_connector        = "luxantiq-vpc-connector"
 
 # ------------------------
 # IAM
