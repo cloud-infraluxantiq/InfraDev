@@ -125,7 +125,6 @@ variable "cloud_run_angular_service_name" {
   default     = "angular-frontend"
   description = "Cloud Run service name for Angular"
 }
-
 # --------------------------
 # Load Balancer + DNS
 # --------------------------
@@ -174,11 +173,6 @@ variable "machine_type" {
   description = "VM instance machine type"
   type        = string
   default     = "e2-micro"  # or whatever you intend to use
-}
-
-variable "service_name" {
-  type        = string
-  description = "Cloud Run service name for Django"
 }
 
 variable "timeout_seconds" {
