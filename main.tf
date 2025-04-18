@@ -14,6 +14,13 @@ module "vpc" {
   project_id = var.project_id
   region     = var.region
 }
+# ------------------------
+# Razor pay api key
+# ------------------------
+secret_env_vars = {
+  RAZORPAY_API_KEY    = var.razorpay_api_key_secret
+  RAZORPAY_API_SECRET = var.razorpay_api_secret_secret
+}
 
 # ------------------------
 # Cloud Run: Django API
