@@ -38,9 +38,11 @@ module "cloud_run_django" {
   vpc_connector            = module.vpc.vpc_connector_name
 
   secret_env_vars = {
-    DB_PASSWORD = var.db_password_secret
-    JWT_SECRET  = var.jwt_secret_secret
-    SECRET_KEY  = var.django_secret_key_secret
+    DB_PASSWORD           = var.db_password_secret
+    JWT_SECRET            = var.jwt_secret_secret
+    SECRET_KEY            = var.django_secret_key_secret
+    RAZORPAY_API_KEY      = var.razorpay_api_key_secret
+    RAZORPAY_API_SECRET   = var.razorpay_api_secret_secret
   }
 }
 # ------------------------
