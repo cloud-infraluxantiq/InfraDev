@@ -29,13 +29,13 @@ module "cloud_run_django" {
   concurrency              = 80
   database_connection_name = module.sql_postgres.connection_name
   vpc_connector            = module.vpc.vpc_connector_name
+
   secret_env_vars = {
     DB_PASSWORD = var.db_password_secret
     JWT_SECRET  = var.jwt_secret_secret
     SECRET_KEY  = var.django_secret_key_secret
   }
 }
-
 # ------------------------
 # Cloud Run: Angular Frontend
 # ------------------------
