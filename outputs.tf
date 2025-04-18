@@ -24,12 +24,6 @@ output "angular_frontend_url" {
 # Jenkins & Load Balancer Outputs
 # -------------------------------
 
-# Jenkins UI public access URL
-output "jenkins_ui_url" {
-  description = "Jenkins web interface exposed via HTTPS"
-  value       = "https://${var.jenkins_domain}"
-}
-
 # Global static IP used for Load Balancer/DNS records
 output "load_balancer_ip" {
   description = "Global static IP address assigned to the HTTPS Load Balancer"
