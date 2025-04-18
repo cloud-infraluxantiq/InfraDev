@@ -63,9 +63,9 @@ variable "django_domain" {
 # -------------------------------
 # Secret Manager Entries
 # -------------------------------
-variable "db_password" {
+variable "db_password_secret" {
   type        = string
-  description = "PostgreSQL DB password"
+  description = "Secret Manager name for PostgreSQL DB password"
 }
 
 variable "db_user" {
@@ -200,12 +200,6 @@ variable "db_name" {
   description = "Name of the PostgreSQL database"
   type        = string
 }
-
-variable "db_password_secret" {
-  description = "Secret Manager name for DB password"
-  type        = string
-}
-
 variable "db_user_secret" {
   description = "Secret Manager name for DB username"
   type        = string
