@@ -70,9 +70,9 @@ variable "db_password_secret" {
 
 variable "db_user" {
   type        = string
-  description = "PostgreSQL DB user"
+  default     = "postgres"
+  description = "Database user name"
 }
-
 variable "jwt_secret" {
   type        = string
   description = "JWT signing secret for Django"
