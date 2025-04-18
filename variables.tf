@@ -276,13 +276,15 @@ variable "vpc_name" {
 
 variable "firewall_rules" {
   description = "Map of firewall rule configurations"
-  type = map(object({
-    protocol      = string
-    ports         = list(string)
-    source_ranges = list(string)
-    target_tags   = list(string)
-    priority      = number
-    description   = string
+  type        = map(object({
+    description          = string
+    direction            = string
+    priority             = number
+    ranges               = list(string)
+    allow_protocol_ports = list(object({
+      protocol = string
+      ports    = list(string)
+    }))
   }))
 }
 
