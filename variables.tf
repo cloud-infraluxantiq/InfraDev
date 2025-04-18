@@ -141,3 +141,52 @@ variable "enable_scheduler" {
   default     = true
   description = "Whether to provision Cloud Scheduler jobs"
 }
+variable "subnet" {
+  description = "Subnet name or configuration"
+  type        = string
+}
+
+variable "machine_type" {
+  description = "VM instance machine type for Jenkins or others"
+  type        = string
+}
+
+variable "service_name" {
+  type        = string
+  description = "Cloud Run service name for Django"
+}
+
+variable "image_url" {
+  type        = string
+  description = "Docker image URL for Django"
+}
+
+variable "timeout_seconds" {
+  type        = number
+  description = "Timeout for Cloud Run service"
+}
+
+variable "database_connection_name" {
+  type        = string
+  description = "Cloud SQL instance connection name"
+}
+
+variable "secret_env_vars" {
+  type        = map(string)
+  description = "Secrets to inject as environment variables"
+}
+
+variable "vpc_connector" {
+  type        = string
+  description = "Name of the VPC connector to attach"
+}
+
+variable "memory_limit" {
+  type        = string
+  description = "Memory allocated for the container"
+}
+
+variable "concurrency" {
+  type        = number
+  description = "Concurrency value for Cloud Run service"
+}
