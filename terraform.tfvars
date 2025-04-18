@@ -73,6 +73,37 @@ url_map = "luxantiq-url-map"
 repo_name = "djangoapi"
 
 # ------------------------
+# VPC rules
+# ------------------------
+
+firewall_rules = {
+  allow-ssh = {
+    description          = "Allow SSH from anywhere"
+    direction            = "INGRESS"
+    priority             = 1000
+    ranges               = ["0.0.0.0/0"]
+    allow_protocol_ports = [
+      {
+        protocol = "tcp"
+        ports    = ["22"]
+      }
+    ]
+  }
+
+  allow-http = {
+    description          = "Allow HTTP traffic"
+    direction            = "INGRESS"
+    priority             = 1001
+    ranges               = ["0.0.0.0/0"]
+    allow_protocol_ports = [
+      {
+        protocol = "tcp"
+        ports    = ["80"]
+      }
+    ]
+  }
+}
+# ------------------------
 # Terraform State
 # ------------------------
 state_bucket_name         = "terraform-state-luxantiq-dev"
@@ -86,6 +117,10 @@ nat_region           = "asia-south1"
 vpc_connector_region = "asia-south1"
 vpc_connector_cidr   = "10.8.0.0/28"
 
+# ------------------------
+# IAM
+# ------------------------
+iam_member = "serviceAccount:github-deployer@cloud-infra-dev.iam.gserviceaccount.com"
 # ------------------------
 # Service Accounts
 # ------------------------

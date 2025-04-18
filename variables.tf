@@ -26,7 +26,13 @@ variable "concurrency" {
   type        = number
   default     = 80  # or remove default if you want to pass via GitHub secrets
 }
-
+# --------------------------
+# IAM
+# --------------------------
+variable "iam_member" {
+  description = "IAM member for Cloud Run invocation (e.g., serviceAccount:github-deployer@cloud-infra-dev.iam.gserviceaccount.com)"
+  type        = string
+}
 # -------------------------------
 # Firebase Configuration
 # -------------------------------
@@ -276,13 +282,15 @@ variable "vpc_name" {
 
 variable "firewall_rules" {
   description = "Map of firewall rule configurations"
-  type = map(object({
-    protocol      = string
-    ports         = list(string)
-    source_ranges = list(string)
-    target_tags   = list(string)
-    priority      = number
-    description   = string
+  type        = map(object({
+    description          = string
+    direction            = string
+    priority             = number
+    ranges               = list(string)
+    allow_protocol_ports = list(object({
+      protocol = string
+      ports    = list(string)
+    }))
   }))
 }
 
