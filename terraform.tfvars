@@ -51,7 +51,7 @@ angular_secret_key_secret = "dev-angular-secret-key"
 # PostgreSQL users (pulled from Secret Manager at runtime)
 users = {
   postgres = {
-    password = var.db_password
+    password = "your-db-password"  # Or load via secrets as string
   }
 }
 # ------------------------
