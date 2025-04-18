@@ -23,10 +23,9 @@ variable "service_name" {
 
 # Docker image to deploy (from Artifact Registry)
 variable "image_url" {
+  description = "Docker image URL in Artifact Registry"
   type        = string
-  description = "Fully qualified image URL for the Django backend"
 }
-
 # Memory allocated per container instance
 variable "memory_limit" {
   type        = string

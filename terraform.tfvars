@@ -8,7 +8,7 @@ region         = "asia-south1"
 # ------------------------
 # Cloud Run Images
 # ------------------------
-django_image_url  = "asia-south1-docker.pkg.dev/cloud-infra-dev/backend/djangoapi:latest"
+django_image_url = "asia-south1-docker.pkg.dev/cloud-infra-dev/backend/djangoapi:latest"
 angular_image_url = "asia-south1-docker.pkg.dev/cloud-infra-dev/frontend/angularfrontend:latest"
 
 # ------------------------

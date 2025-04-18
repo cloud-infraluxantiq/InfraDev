@@ -196,10 +196,9 @@ variable "memory_limit" {
 
 # Docker image URL for Django (used in cloud_run_django)
 variable "django_image_url" {
-  description = "Docker image URL for Django backend"
+  description = "Full image path for Django Cloud Run container"
   type        = string
 }
-
 # Docker image URL for Angular (used in cloud_run_angular)
 variable "angular_image_url" {
   description = "Docker image URL for Angular frontend"
@@ -216,11 +215,6 @@ variable "db_user_secret" {
 
 variable "django_secret_key_secret" {
   description = "Secret Manager name for Django secret key"
-  type        = string
-}
-
-variable "iam_member" {
-  description = "IAM member for Cloud Run invocation"
   type        = string
 }
 variable "nat_region" {
