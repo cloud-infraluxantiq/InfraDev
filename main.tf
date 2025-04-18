@@ -99,17 +99,13 @@ module "lb" {
 module "dns_ssl" {
   source     = "./modules/dns_ssl"
   project_id = var.project_id
-
   dns_zone     = "luxantiq-com-zone"
   domain_names = [
     var.angular_domain,
     var.django_domain
   ]
-
   url_map = module.lb.url_map_self_link  # ✅ Required line
 }
-
-
 # ------------------------
 # Secret Manager
 # ------------------------
