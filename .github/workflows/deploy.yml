@@ -75,6 +75,7 @@ jobs:
         env:
            TF_WORKSPACE: InfraDev
            TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+           TF_VAR_project_number: ${{ secrets.PROJECT_NUMBER }}  # 👈 This is key!
         run: |
            terraform init
            terraform plan
