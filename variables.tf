@@ -191,10 +191,6 @@ variable "memory_limit" {
   description = "Memory allocated for the container"
 }
 
-variable "concurrency" {
-  type        = number
-  description = "Concurrency value for Cloud Run service"
-}
 # Docker image URL for Django (used in cloud_run_django)
 variable "django_image_url" {
   description = "Docker image URL for Django backend"
