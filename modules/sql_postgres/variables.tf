@@ -35,10 +35,8 @@ variable "users" {
   type = map(object({
     password = string
   }))
-  default = {}
-  description = "Deprecated: not used when passwords are fetched from Secret Manager"
+  description = "Map of PostgreSQL users and passwords"
 }
-
 variable "db_user" {
   type        = string
   description = "The username for the PostgreSQL user"

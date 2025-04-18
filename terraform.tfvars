@@ -48,6 +48,12 @@ jwt_secret_secret        = "dev-jwt-secret"
 django_secret_key_secret  = "dev-django-secret-key"
 angular_secret_key_secret = "dev-angular-secret-key"
 
+# PostgreSQL users (pulled from Secret Manager at runtime)
+users = {
+  postgres = {
+    password = "your-db-password"  # Or load via secrets as string
+  }
+}
 # ------------------------
 # Firebase Config
 # ------------------------
@@ -120,6 +126,7 @@ vpc_name              = "luxantiq-vpc"
 nat_region           = "asia-south1"
 vpc_connector_region = "asia-south1"
 vpc_connector_cidr   = "10.8.0.0/28"
+subnet               = "default"
 private_network = "projects/cloud-infra-dev/global/networks/luxantiq-vpc"
 vpc_connector        = "luxantiq-vpc-connector"
 

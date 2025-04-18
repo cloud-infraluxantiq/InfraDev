@@ -165,10 +165,9 @@ variable "enable_scheduler" {
   description = "Whether to provision Cloud Scheduler jobs"
 }
 variable "subnet" {
-  description = "Subnet name or configuration"
+  description = "Subnet name or configuration for VM"
   type        = string
 }
-
 variable "machine_type" {
   description = "VM instance machine type"
   type        = string
@@ -213,17 +212,7 @@ variable "memory_limit" {
   type        = string
   description = "Memory allocated for the container"
 }
-
-# Docker image URL for Django (used in cloud_run_django)
-#variable "django_image_url" {
-#  description = "Full image path for Django Cloud Run container"
-# type        = string
-#}
-# Docker image URL for Angular (used in cloud_run_angular)
-#variable "angular_image_url" {
-#  description = "Docker image URL for Angular frontend"
-#  type        = string
-#}
+# --------------------------
 variable "db_name" {
   description = "Name of the PostgreSQL database"
   type        = string
