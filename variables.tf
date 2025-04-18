@@ -152,7 +152,7 @@ variable "subnet" {
 }
 
 variable "machine_type" {
-  description = "VM instance machine type for Jenkins or others"
+  description = "VM instance machine type"
   type        = string
 }
 
@@ -214,12 +214,6 @@ variable "iam_member" {
   description = "IAM member for Cloud Run invocation"
   type        = string
 }
-
-variable "jenkins_domain" {
-  description = "Domain name for Jenkins (if used)"
-  type        = string
-}
-
 variable "nat_region" {
   description = "Region used for Cloud NAT and Router"
   type        = string
