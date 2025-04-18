@@ -21,6 +21,11 @@ variable "project_number" {
   type        = string
   description = "The numeric project ID (used in IAM bindings, policies)"
 }
+variable "concurrency" {
+  description = "Concurrency value for Cloud Run service"
+  type        = number
+  default     = 80  # or remove default if you want to pass via GitHub secrets
+}
 
 # -------------------------------
 # Firebase Configuration
@@ -58,16 +63,16 @@ variable "django_domain" {
 # -------------------------------
 # Secret Manager Entries
 # -------------------------------
-variable "db_password" {
+variable "db_password_secret" {
   type        = string
-  description = "PostgreSQL DB password"
+  description = "Secret Manager name for PostgreSQL DB password"
 }
 
 variable "db_user" {
   type        = string
-  description = "PostgreSQL DB user"
+  default     = "postgres"
+  description = "Database user name"
 }
-
 variable "jwt_secret" {
   type        = string
   description = "JWT signing secret for Django"
@@ -140,4 +145,154 @@ variable "enable_scheduler" {
   type        = bool
   default     = true
   description = "Whether to provision Cloud Scheduler jobs"
+}
+variable "subnet" {
+  description = "Subnet name or configuration"
+  type        = string
+}
+
+variable "machine_type" {
+  description = "VM instance machine type"
+  type        = string
+}
+
+variable "service_name" {
+  type        = string
+  description = "Cloud Run service name for Django"
+}
+
+variable "image_url" {
+  type        = string
+  description = "Docker image URL for Django"
+}
+
+variable "timeout_seconds" {
+  type        = number
+  description = "Timeout for Cloud Run service"
+}
+variable "secret_env_vars" {
+  type        = map(string)
+  description = "Secrets to inject as environment variables"
+}
+
+variable "vpc_connector" {
+  type        = string
+  description = "Name of the VPC connector to attach"
+}
+
+variable "memory_limit" {
+  type        = string
+  description = "Memory allocated for the container"
+}
+
+# Docker image URL for Django (used in cloud_run_django)
+variable "django_image_url" {
+  description = "Docker image URL for Django backend"
+  type        = string
+}
+
+# Docker image URL for Angular (used in cloud_run_angular)
+variable "angular_image_url" {
+  description = "Docker image URL for Angular frontend"
+  type        = string
+}
+variable "db_name" {
+  description = "Name of the PostgreSQL database"
+  type        = string
+}
+variable "db_user_secret" {
+  description = "Secret Manager name for DB username"
+  type        = string
+}
+
+variable "django_secret_key_secret" {
+  description = "Secret Manager name for Django secret key"
+  type        = string
+}
+
+variable "iam_member" {
+  description = "IAM member for Cloud Run invocation"
+  type        = string
+}
+variable "nat_region" {
+  description = "Region used for Cloud NAT and Router"
+  type        = string
+}
+
+variable "private_network" {
+  description = "VPC self-link for Cloud SQL private IP access"
+  type        = string
+}
+
+variable "razorpay_api_key_secret" {
+  description = "Secret Manager name for Razorpay API key"
+  type        = string
+}
+
+variable "razorpay_api_secret_secret" {
+  description = "Secret Manager name for Razorpay API secret"
+  type        = string
+}
+
+variable "repo_name" {
+  description = "Artifact Registry repository name"
+  type        = string
+}
+
+variable "tier" {
+  description = "Cloud SQL instance machine tier"
+  type        = string
+}
+
+variable "url_map" {
+  description = "URL map resource for Load Balancer SSL module"
+  type        = string
+}
+
+variable "users" {
+  description = "Map of PostgreSQL users and their passwords"
+  type = map(object({
+    password = string
+  }))
+}
+
+variable "vpc_connector_cidr" {
+  description = "CIDR range for the VPC Serverless connector"
+  type        = string
+}
+
+variable "vpc_connector_region" {
+  description = "Region where VPC connector will be created"
+  type        = string
+}
+
+variable "vpc_name" {
+  description = "Name of the custom VPC"
+  type        = string
+}
+
+variable "firewall_rules" {
+  description = "Map of firewall rule configurations"
+  type = map(object({
+    protocol      = string
+    ports         = list(string)
+    source_ranges = list(string)
+    target_tags   = list(string)
+    priority      = number
+    description   = string
+  }))
+}
+
+variable "databases" {
+  description = "List of PostgreSQL database names to create"
+  type        = list(string)
+}
+
+variable "database_flags" {
+  description = "Database flags for Cloud SQL (e.g. for tuning)"
+  type        = list(object({
+    name  = string
+    value = string
+  }))
+  default = []
 }

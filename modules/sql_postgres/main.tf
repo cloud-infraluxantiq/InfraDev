@@ -3,7 +3,6 @@
 # Provisions private Cloud SQL instance with IAM + backups
 # ----------------------------------------------------------
 
-# Cloud SQL Instance (PostgreSQL 14) with private IP
 resource "google_sql_database_instance" "postgres_instance" {
   name             = var.instance_name
   region           = var.region
@@ -25,35 +24,39 @@ resource "google_sql_database_instance" "postgres_instance" {
     }
 
     maintenance_window {
-      day          = 7  # Sunday
+      day          = 7
       hour         = 2
       update_track = "stable"
     }
 
     ip_configuration {
-      ipv4_enabled    = false                   # Enforce private IP only
-      private_network = var.private_network     # VPC network self-link
-      require_ssl     = true
+      ipv4_enabled          = false
+      private_network       = var.private_network
+      require_ssl           = true
     }
 
     database_flags = var.database_flags
   }
 
-  deletion_protection = true
-  encryption_key_name = var.encryption_key_name
+  deletion_protection   = true
+  encryption_key_name   = var.encryption_key_name
 }
 
-# SQL Users (from var.users map)
-resource "google_sql_user" "users" {
-  for_each = var.users
+# ✅ Securely fetch DB password from Secret Manager
+data "google_secret_manager_secret_version" "db_password" {
+  secret  = var.db_password_secret
+  project = var.project_id
+}
 
-  name     = each.key
+# ✅ Create DB user (e.g., postgres) using password from Secret Manager
+resource "google_sql_user" "postgres_user" {
+  name     = var.db_user
   instance = google_sql_database_instance.postgres_instance.name
-  password = each.value.password
+  password = data.google_secret_manager_secret_version.db_password.secret_data
   project  = var.project_id
 }
 
-# SQL Databases (from var.databases list)
+# ✅ Create Databases
 resource "google_sql_database" "databases" {
   for_each = toset(var.databases)
 
@@ -62,7 +65,7 @@ resource "google_sql_database" "databases" {
   project  = var.project_id
 }
 
-# IAM binding to allow a specific SA to administer Cloud SQL
+# ✅ IAM binding for SQL Admin (e.g., to GitHub deployer SA)
 resource "google_project_iam_member" "cloudsql_admin" {
   role   = "roles/cloudsql.admin"
   member = "serviceAccount:${var.service_account_email}"
