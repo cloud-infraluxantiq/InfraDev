@@ -21,6 +21,11 @@ variable "project_number" {
   type        = string
   description = "The numeric project ID (used in IAM bindings, policies)"
 }
+variable "concurrency" {
+  description = "Concurrency value for Cloud Run service"
+  type        = number
+  default     = 80  # or remove default if you want to pass via GitHub secrets
+}
 
 # -------------------------------
 # Firebase Configuration
