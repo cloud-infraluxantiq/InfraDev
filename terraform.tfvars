@@ -110,3 +110,6 @@ service_accounts = {
     create_key   = false
   }
 }
+databases = [
+  "dev_luxantiq"
+]
