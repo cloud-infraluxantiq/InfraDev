@@ -36,14 +36,14 @@ variable "iam_member" {
 # --------------------------
 # JWT secret
 # --------------------------
-#variable "jwt_secret_secret" {
-  #description = "Secret Manager name for JWT secret"
-#  type        = string
- # default     = "dev-jwt-secret"
-#}
 variable "secret_env_vars" {
   description = "Map of secret environment variables (key = ENV_VAR, value = Secret name)"
   type        = map(string)
+}
+variable "jwt_secret_secret" {
+  description = "Secret Manager name for JWT secret"
+  type        = string
+  default     = "dev-jwt-secret"
 }
 
 # -------------------------------
@@ -92,11 +92,6 @@ variable "db_user" {
   default     = "postgres"
   description = "Database user name"
 }
-variable "jwt_secret" {
-  type        = string
-  description = "JWT signing secret for Django"
-}
-
 # Reference to Secret Manager entry (already exists in tfvars or secrets)
 
 variable "angular_secret_key_secret" {
