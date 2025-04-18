@@ -33,6 +33,14 @@ variable "iam_member" {
   description = "IAM member for Cloud Run invocation (e.g., serviceAccount:github-deployer@cloud-infra-dev.iam.gserviceaccount.com)"
   type        = string
 }
+# --------------------------
+# JWT secret
+# --------------------------
+variable "jwt_secret_secret" {
+  description = "Secret Manager name for JWT secret"
+  type        = string
+  default     = "dev-jwt-secret"
+}
 # -------------------------------
 # Firebase Configuration
 # -------------------------------
