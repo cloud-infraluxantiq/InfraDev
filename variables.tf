@@ -170,12 +170,6 @@ variable "timeout_seconds" {
   type        = number
   description = "Timeout for Cloud Run service"
 }
-
-variable "database_connection_name" {
-  type        = string
-  description = "Cloud SQL instance connection name"
-}
-
 variable "secret_env_vars" {
   type        = map(string)
   description = "Secrets to inject as environment variables"
