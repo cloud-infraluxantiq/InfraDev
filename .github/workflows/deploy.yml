@@ -71,7 +71,7 @@ jobs:
           terraform_version: 1.4.6
 
       - name: 🔄 Terraform Init + Apply (Terraform Cloud)
-        working-directory: ./InfraDev  # or ./ if tf files are at root
+        working-directory: ./  # or ./ if tf files are at root
         env:
            TF_WORKSPACE: InfraDev
            TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
