@@ -171,6 +171,7 @@ variable "subnet" {
 variable "machine_type" {
   description = "VM instance machine type"
   type        = string
+  default     = "e2-micro"  # or whatever you intend to use
 }
 
 variable "service_name" {
