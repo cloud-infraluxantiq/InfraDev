@@ -207,7 +207,10 @@ variable "private_network" {
   description = "The self-link of the VPC network to connect Cloud SQL"
   type        = string
 }
-
+variable "nat_region" {
+  description = "Region used for Cloud NAT and Router"
+  type        = string
+}
 
 # --------------------------
 variable "memory_limit" {
@@ -238,10 +241,7 @@ variable "django_secret_key_secret" {
   description = "Secret Manager name for Django secret key"
   type        = string
 }
-variable "nat_region" {
-  description = "Region used for Cloud NAT and Router"
-  type        = string
-}
+
 variable "razorpay_api_key_secret" {
   description = "Secret Manager name for Razorpay API key"
   type        = string
