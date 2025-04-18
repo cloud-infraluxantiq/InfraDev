@@ -26,7 +26,13 @@ variable "concurrency" {
   type        = number
   default     = 80  # or remove default if you want to pass via GitHub secrets
 }
-
+# --------------------------
+# IAM
+# --------------------------
+variable "iam_member" {
+  description = "IAM member for Cloud Run invocation (e.g., serviceAccount:github-deployer@cloud-infra-dev.iam.gserviceaccount.com)"
+  type        = string
+}
 # -------------------------------
 # Firebase Configuration
 # -------------------------------
