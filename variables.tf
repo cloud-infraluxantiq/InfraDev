@@ -218,11 +218,6 @@ variable "django_secret_key_secret" {
   description = "Secret Manager name for Django secret key"
   type        = string
 }
-
-variable "iam_member" {
-  description = "IAM member for Cloud Run invocation"
-  type        = string
-}
 variable "nat_region" {
   description = "Region used for Cloud NAT and Router"
   type        = string
