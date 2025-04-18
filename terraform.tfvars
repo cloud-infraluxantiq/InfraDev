@@ -27,7 +27,6 @@ timeout_seconds = 300
 # Secret env var mapping (Cloud Run → Secret Manager)
 secret_env_vars = {
   DB_PASSWORD = "dev-db-password"
-  JWT_SECRET  = "dev-jwt-secret"
   SECRET_KEY  = "dev-django-secret-key"
 }
 
@@ -35,7 +34,6 @@ secret_env_vars = {
 # Cloud SQL
 # ------------------------
 db_name                  = "dev_luxantiq"
-db_user                  = "your_postgres_username"
 cloud_sql_instance_name  = "luxantiq-dev-sql"
 tier                     = "db-custom-1-3840"
 disk_size                = 10
@@ -71,12 +69,13 @@ razorpay_api_secret_secret = "dev-razorpay-api-secret"
 # DNS & Load Balancer
 # ------------------------
 dns_zone     = "luxantiq-com-zone"
+
+# Ensure this matches your DNS + SSL configuration
 domain_names = [
   "shop.dev.angular.luxantiq.com",
   "api.dev.django.luxantiq.com"
 ]
-url_map = "luxantiq-url-map"
-
+enable_terraform_locking = true
 # ------------------------
 # Artifact Registry
 # ------------------------
@@ -117,8 +116,6 @@ firewall_rules = {
 # Terraform State
 # ------------------------
 state_bucket_name         = "terraform-state-luxantiq-dev"
-enable_terraform_locking  = true
-
 # ------------------------
 # VPC Configuration
 # ------------------------

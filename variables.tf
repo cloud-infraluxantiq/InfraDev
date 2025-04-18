@@ -78,6 +78,10 @@ variable "django_domain" {
   default     = "api.dev.django.luxantiq.com"
   description = "Domain for the Django backend"
 }
+variable "domain_names" {
+  description = "List of domains used in managed SSL certs"
+  type        = list(string)
+}
 
 # -------------------------------
 # Secret Manager Entries
@@ -154,6 +158,11 @@ variable "state_bucket_name" {
   type        = string
   default     = "terraform-state-luxantiq-dev"
   description = "GCS bucket for Terraform remote state"
+}
+variable "enable_terraform_locking" {
+  description = "Enable locking for Terraform remote state"
+  type        = bool
+  default     = true
 }
 
 # --------------------------

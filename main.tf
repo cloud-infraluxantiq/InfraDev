@@ -65,24 +65,23 @@ module "cloud_run_angular" {
 # SQL (PostgreSQL)
 # ------------------------
 module "sql_postgres" {
-  source              = "./modules/sql_postgres"
-  project_id          = var.project_id
-  region              = var.region
-  instance_name       = var.cloud_sql_instance_name
-  tier                = "db-f1-micro"
-  disk_size           = 10
-  private_network     = module.vpc.vpc_self_link
-  encryption_key_name = "projects/${var.project_id}/locations/asia-south1/keyRings/terraform-secrets/cryptoKeys/state-key"
-  users = {
-    postgres = {
-      password = "supersecret"
-    }
-  }
-  databases       = ["dev_luxantiq"]
-  database_flags  = []
-  service_account_email = var.service_account_email
-}
+  source     = "./modules/sql_postgres"
+  project_id = var.project_id
+  region     = var.region
 
+  # ✅ REQUIRED
+  instance_name           = var.cloud_sql_instance_name
+  tier                    = var.tier
+  disk_size               = var.disk_size
+  private_network         = module.vpc.vpc_self_link
+  encryption_key_name     = var.encryption_key_name
+  databases               = var.databases
+  users                   = var.users
+  db_user                 = var.db_user                        # ✅ add this
+  db_password_secret      = var.db_password_secret             # ✅ add this
+  database_flags          = var.database_flags
+  service_account_email   = var.service_account_email
+}
 # ------------------------
 # Load Balancer + SSL
 # ------------------------
