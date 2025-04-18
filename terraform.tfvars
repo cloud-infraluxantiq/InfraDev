@@ -58,7 +58,7 @@ angular_secret_key_secret = "dev-angular-secret-key"
 # ------------------------
 # Razorpay Secrets
 # ------------------------
-razorpay_api_key_secret    = "dev-razorpay-api-key"
+razorpay_api_key_secret = "dev-razorpay-api-key"
 razorpay_api_secret_secret = "dev-razorpay-api-secret"
 
 # ------------------------
