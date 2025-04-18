@@ -3,7 +3,6 @@
 # Used by Luxantiq to provision secure private DB instances
 ############################################################
 
-# GCP Project ID and region
 variable "project_id" {
   type = string
 }
@@ -12,53 +11,53 @@ variable "region" {
   type = string
 }
 
-# SQL Instance name (e.g., luxantiq-dev-sql)
 variable "instance_name" {
   type = string
 }
 
-# Machine tier (e.g., db-f1-micro, db-custom-1-3840)
 variable "tier" {
   type = string
 }
 
-# Disk size in GB
 variable "disk_size" {
   type = number
 }
 
-# VPC self-link for private IP attachment
 variable "private_network" {
   type = string
 }
 
-# KMS encryption key (CMEK) for storage encryption
 variable "encryption_key_name" {
   type = string
 }
 
-# User credentials map (e.g., { "admin" = { password = "xyz" } })
 variable "users" {
   type = map(object({
     password = string
   }))
+  default = {}
+  description = "Deprecated: not used when passwords are fetched from Secret Manager"
 }
 
-# List of databases to be created (e.g., ["dev_luxantiq"])
+variable "db_user" {
+  type        = string
+  description = "The username for the PostgreSQL user"
+}
+
+variable "db_password_secret" {
+  type        = string
+  description = "The Secret Manager name where the DB password is stored"
+}
+
 variable "databases" {
   type = list(string)
 }
 
-# Optional database flags (e.g., log_min_duration_statement, etc.)
 variable "database_flags" {
-  type = list(object({
-    name  = string
-    value = string
-  }))
+  type    = list(object({ name = string, value = string }))
   default = []
 }
 
-# SA email to be granted cloudsql.admin role
 variable "service_account_email" {
   type = string
 }
