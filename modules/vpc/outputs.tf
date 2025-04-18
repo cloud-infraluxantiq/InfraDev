@@ -8,7 +8,6 @@ output "vpc_name" {
   description = "The name of the custom VPC network"
   value       = google_compute_network.custom_vpc.name
 }
-
 # List of all subnet names created in this VPC
 output "subnet_names" {
   description = "Names of subnets created within the VPC"

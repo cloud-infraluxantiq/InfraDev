@@ -98,15 +98,17 @@ variable "angular_secret_key_secret" {
   description = "Secret Manager name for Angular secret key (if applicable)"
   type        = string
 }
-
-variable "razorpay_api_key" {
+# --------------------------
+# Razor pay
+# --------------------------
+variable "razorpay_api_key_secret" {
+  description = "Secret Manager name for Razorpay API Key"
   type        = string
-  description = "Razorpay Public Key"
 }
 
-variable "razorpay_api_secret" {
+variable "razorpay_api_secret_secret" {
+  description = "Secret Manager name for Razorpay API Secret"
   type        = string
-  description = "Razorpay Secret Key"
 }
 
 # --------------------------
@@ -123,7 +125,6 @@ variable "cloud_run_angular_service_name" {
   default     = "angular-frontend"
   description = "Cloud Run service name for Angular"
 }
-
 # --------------------------
 # Load Balancer + DNS
 # --------------------------
@@ -174,20 +175,40 @@ variable "machine_type" {
   default     = "e2-micro"  # or whatever you intend to use
 }
 
-variable "service_name" {
-  type        = string
-  description = "Cloud Run service name for Django"
-}
-
 variable "timeout_seconds" {
   type        = number
   description = "Timeout for Cloud Run service"
 }
+# --------------------------
+# VPC
+# --------------------------
 variable "vpc_connector" {
   type        = string
   description = "Name of the VPC connector to attach"
 }
+variable "vpc_connector_cidr" {
+  description = "CIDR range for the VPC Serverless connector"
+  type        = string
+}
 
+variable "vpc_connector_region" {
+  type        = string
+  description = "Region to deploy VPC connector"
+}
+variable "vpc_name" {
+  description = "Name of the VPC network"
+  type        = string
+}
+variable "private_network" {
+  description = "The self-link of the VPC network to connect Cloud SQL"
+  type        = string
+}
+variable "nat_region" {
+  description = "Region used for Cloud NAT and Router"
+  type        = string
+}
+
+# --------------------------
 variable "memory_limit" {
   type        = string
   description = "Memory allocated for the container"
@@ -216,25 +237,7 @@ variable "django_secret_key_secret" {
   description = "Secret Manager name for Django secret key"
   type        = string
 }
-variable "nat_region" {
-  description = "Region used for Cloud NAT and Router"
-  type        = string
-}
 
-variable "private_network" {
-  description = "VPC self-link for Cloud SQL private IP access"
-  type        = string
-}
-
-variable "razorpay_api_key_secret" {
-  description = "Secret Manager name for Razorpay API key"
-  type        = string
-}
-
-variable "razorpay_api_secret_secret" {
-  description = "Secret Manager name for Razorpay API secret"
-  type        = string
-}
 
 variable "repo_name" {
   description = "Artifact Registry repository name"
@@ -257,21 +260,9 @@ variable "users" {
     password = string
   }))
 }
-
-variable "vpc_connector_cidr" {
-  description = "CIDR range for the VPC Serverless connector"
-  type        = string
-}
-
-variable "vpc_connector_region" {
-  description = "Region where VPC connector will be created"
-  type        = string
-}
-
-variable "vpc_name" {
-  description = "Name of the custom VPC"
-  type        = string
-}
+# --------------------------
+# FIrewall
+# --------------------------
 
 variable "firewall_rules" {
   description = "Map of firewall rule configurations"

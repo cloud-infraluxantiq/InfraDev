@@ -58,7 +58,7 @@ angular_secret_key_secret = "dev-angular-secret-key"
 # ------------------------
 # Razorpay Secrets
 # ------------------------
-razorpay_api_key_secret    = "dev-razorpay-api-key"
+razorpay_api_key_secret = "dev-razorpay-api-key"
 razorpay_api_secret_secret = "dev-razorpay-api-secret"
 
 # ------------------------
@@ -120,6 +120,8 @@ vpc_name              = "luxantiq-vpc"
 nat_region           = "asia-south1"
 vpc_connector_region = "asia-south1"
 vpc_connector_cidr   = "10.8.0.0/28"
+private_network = "projects/cloud-infra-dev/global/networks/luxantiq-vpc"
+vpc_connector        = "luxantiq-vpc-connector"
 
 # ------------------------
 # IAM
