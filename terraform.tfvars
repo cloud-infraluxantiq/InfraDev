@@ -118,6 +118,10 @@ vpc_connector_region = "asia-south1"
 vpc_connector_cidr   = "10.8.0.0/28"
 
 # ------------------------
+# IAM
+# ------------------------
+iam_member = "serviceAccount:github-deployer@cloud-infra-dev.iam.gserviceaccount.com"
+# ------------------------
 # Service Accounts
 # ------------------------
 service_accounts = {
