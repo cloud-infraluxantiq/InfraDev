@@ -104,7 +104,7 @@ module "dns_ssl" {
     var.angular_domain,
     var.django_domain
   ]
-  url_map       = module.lb.url_map_self_link
+  url_map = module.lb.url_map_self_link
 }
 
 # ------------------------
