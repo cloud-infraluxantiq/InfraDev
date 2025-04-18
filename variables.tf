@@ -22,6 +22,22 @@ variable "project_number" {
   type        = string
   description = "The numeric project ID (used in IAM bindings, policies)"
 }
+###############################################
+# added based on deploymnet error
+variable "subnet" {
+  type        = string
+  description = "Subnet CIDR block"
+}
+
+variable "service_account_email" {
+  type        = string
+  description = "Service account email for IAM bindings"
+}
+
+variable "jenkins_domain" {
+  type        = string
+  description = "Domain used for Jenkins server (if applicable)"
+}
 
 # -------------------------------
 # Firebase Authentication Config
