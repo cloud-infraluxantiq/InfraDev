@@ -187,11 +187,6 @@ variable "timeout_seconds" {
   type        = number
   description = "Timeout for Cloud Run service"
 }
-variable "secret_env_vars" {
-  type        = map(string)
-  description = "Secrets to inject as environment variables"
-}
-
 variable "vpc_connector" {
   type        = string
   description = "Name of the VPC connector to attach"
