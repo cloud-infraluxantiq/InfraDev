@@ -39,6 +39,9 @@ db_name     = "dev_luxantiq"
 db_user     = "your_postgres_username"
 db_password = "your_postgres_password"
 
+cloud_sql_instance_name = "luxantiq-dev-sql"
+databases               = ["dev_luxantiq"]
+
 # ------------------------
 # Django Auth Secrets
 # ------------------------
