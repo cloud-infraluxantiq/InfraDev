@@ -17,7 +17,8 @@ angular_image_url = "asia-south1-docker.pkg.dev/cloud-infra-dev/frontend/angular
 cloud_sql_instance_name = "luxantiq-dev-sql"
 db_name                 = "dev_luxantiq"
 db_user_secret          = "dev-db-user"
-db_password_secret      = "dev-db-password"
+db_password_secret      = "dev-db-password" # Stored in Secret Manager
+
 database_flags = [
   {
     name  = "max_connections"
