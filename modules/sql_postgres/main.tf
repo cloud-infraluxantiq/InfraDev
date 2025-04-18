@@ -44,12 +44,17 @@ resource "google_sql_database_instance" "postgres_instance" {
 }
 
 # SQL Users (from var.users map)
-resource "google_sql_user" "users" {
-  for_each = var.users
+# Fetch the latest secret version of DB password
+data "google_secret_manager_secret_version" "db_password" {
+  secret  = var.db_password_secret
+  project = var.project_id
+}
 
-  name     = each.key
+# Create a single SQL user (e.g., postgres) using password from Secret Manager
+resource "google_sql_user" "postgres_user" {
+  name     = var.db_user  # E.g., "postgres"
   instance = google_sql_database_instance.postgres_instance.name
-  password = each.value.password
+  password = data.google_secret_manager_secret_version.db_password.secret_data
   project  = var.project_id
 }
 
