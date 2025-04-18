@@ -77,12 +77,6 @@ variable "django_secret_key" {
   type        = string
   description = "Django SECRET_KEY"
 }
-
-variable "gcs_service_key" {
-  type        = string
-  description = "Base64 GCS Service Account key (for uploads)"
-}
-
 variable "razorpay_api_key" {
   type        = string
   description = "Razorpay Public Key"
