@@ -69,7 +69,6 @@ razorpay_api_secret_secret = "dev-razorpay-api-secret"
 # DNS & Load Balancer
 # ------------------------
 dns_zone     = "luxantiq-com-zone"
-db_password_secret   = "dev-db-password"
 
 # Ensure this matches your DNS + SSL configuration
 domain_names = [
