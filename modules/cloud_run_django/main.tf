@@ -19,18 +19,8 @@ resource "google_cloud_run_service" "django" {
             memory = var.memory_limit  # Allocate memory per container
           }
         }
- env {
-   for k, v in var.secret_env_vars : {
-     name = k
-      value_from {
-       secret_key_ref {
-         secret  = v
-          version = "latest"
-      }
-    }
-  }
-}
-        dynamic "env" {
+
+     dynamic "env" {
           for_each = var.secret_env_vars
           content {
             name = env.key
