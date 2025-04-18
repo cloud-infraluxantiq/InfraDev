@@ -1,99 +1,142 @@
-##########################################
-# Luxantiq Terraform Variable Values
-# These values override defaults in variables.tf during provisioning.
-##########################################
+# -----------------------------
+# Core GCP Project Information
+# -----------------------------
+project_id     = "cloud-infra-dev"
+region         = "asia-south1"
+project_number = "398990037605"
 
-# ------------------------
-# Google Cloud Project & Region
-# ------------------------
+# -----------------------------
+# Docker Artifact Image URLs
+# -----------------------------
+django_image_url  = "asia-south1-docker.pkg.dev/cloud-infra-dev/backend/djangoapi:latest"
+angular_image_url = "asia-south1-docker.pkg.dev/cloud-infra-dev/frontend/angularfrontend:latest"
 
-
-# Docker image references for Cloud Run services
-django_image_url   = "asia-south1-docker.pkg.dev/cloud-infra-dev/backend/djangoapi:latest"
-angular_image_url  = "asia-south1-docker.pkg.dev/cloud-infra-dev/frontend/angularfrontend:latest"
-
-# ------------------------
-# Cloud Run Services
-# ------------------------
-cloud_run_django_service_name  = "DjangoAPI"
-cloud_run_angular_service_name = "AngularFrontend"
-
-# ------------------------
-# Domain Names (DNS + SSL)
-# ------------------------
-angular_domain  = "shop.dev.angular.luxantiq.com"
-django_domain   = "api.dev.django.luxantiq.com"
-jenkins_domain  = "jenkins.dev.luxantiq.com"
-
-# ------------------------
-# Firebase Authentication (via Secret Manager)
-# ------------------------
-firebase_api_key      = "your_firebase_api_key"
-firebase_project_id   = "your_firebase_project_id"
-firebase_auth_domain  = "your_firebase_auth_domain"
-
-# ------------------------
-# PostgreSQL DB Configuration
-# ------------------------
-db_name     = "dev_luxantiq"
-db_user     = "your_postgres_username"
-db_password = "your_postgres_password"
-
+# -----------------------------
+# Cloud SQL Setup
+# -----------------------------
 cloud_sql_instance_name = "luxantiq-dev-sql"
-databases               = ["dev_luxantiq"]
+db_name                 = "dev_luxantiq"
+db_user_secret          = "dev-db-user"
+db_password_secret      = "dev-db-password"
+database_flags = [
+  {
+    name  = "max_connections"
+    value = "100"
+  }
+]
+databases = ["dev_luxantiq"]
 
-# ------------------------
-# Django Auth Secrets
-# ------------------------
-jwt_secret        = "your_jwt_secret"
-django_secret_key = "your_django_secret_key"
+# -----------------------------
+# Firebase Configuration
+# -----------------------------
+firebase_project_id   = "cloud-infra-dev-bcf2c"
+firebase_auth_domain  = "cloud-infra-dev-bcf2c.firebaseapp.com"
+firebase_api_key      = "AIzaSyC9XjFtVtRDu5Mq_2xWvrPDNF1tQaECl2k"
 
-# ------------------------
-# Razorpay Keys
-# ------------------------
-razorpay_api_key    = "your_razorpay_api_key"
-razorpay_api_secret = "your_razorpay_api_secret"
+# -----------------------------
+# Secret Manager References
+# -----------------------------
+django_secret_key_secret = "dev-django-secret-key"
+jwt_secret_secret        = "dev-jwt-secret"
+razorpay_api_key_secret  = "dev-razorpay-api-key"
+razorpay_api_secret_secret = "dev-razorpay-api-secret"
+gcs_service_key_secret   = "dev-gcs-service-key"
 
-
-# ------------------------
-# Terraform Remote State
-# ------------------------
-state_bucket_name        = "terraform-state-luxantiq-dev"
-enable_terraform_locking = true
-
-# ------------------------
-# Optional Features
-# ------------------------
-enable_scheduler = true
-
-# ------------------------
-# IAM: Service Accounts & Role Bindings
-# Used by Terraform, Jenkins, Cloud Scheduler
-# ------------------------
+# -----------------------------
+# IAM Service Accounts
+# -----------------------------
 service_accounts = {
   terraform-deployer = {
     display_name = "Terraform Deployer"
     description  = "Used by Terraform to manage GCP infrastructure"
     role         = "roles/editor"
-    create_key   = true
+    create_key   = false
   }
 
-  jenkins-agent = {
-    display_name = "Jenkins Build Agent"
-    description  = "Used by Jenkins to trigger GCP builds and deploys"
-    role         = "roles/cloudbuild.builds.editor"
-    create_key   = true
+  github-deployer = {
+    display_name = "GitHub Deployer"
+    description  = "Used by GitHub Actions to deploy infra"
+    role         = "roles/editor"
+    create_key   = false
   }
 
   cloud-scheduler-executor = {
     display_name = "Scheduler Executor"
-    description  = "Used by Cloud Scheduler to trigger Pub/Sub"
+    description  = "Triggers Pub/Sub from Cloud Scheduler"
     role         = "roles/pubsub.publisher"
     create_key   = false
   }
 }
 
-# ------------------------
+# -----------------------------
+# Cloud Run Services
+# -----------------------------
+cloud_run_django_service_name  = "django-api"
+cloud_run_angular_service_name = "angular-frontend"
+timeout_seconds = 300
+memory_limit    = "512Mi"
+concurrency     = 80
+
+# -----------------------------
+# Load Balancer / DNS / SSL
+# -----------------------------
+dns_zone      = "luxantiq-com-zone"
+domain_names  = [
+  "shop.dev.angular.luxantiq.com",
+  "api.dev.django.luxantiq.com"
+]
+url_map       = "luxantiq-url-map"
+
+# -----------------------------
 # Artifact Registry
-# ------------------------
+# -----------------------------
 repo_name = "djangoapi"
+
+# -----------------------------
+# Cloud VPC Networking
+# -----------------------------
+vpc_name     = "luxantiq-vpc"
+nat_region   = "asia-south1"
+vpc_connector_region = "asia-south1"
+vpc_connector_cidr   = "10.10.0.0/28"
+private_network      = "projects/cloud-infra-dev/global/networks/luxantiq-vpc"
+
+subnets = {
+  "luxantiq-subnet-1" = {
+    cidr             = "10.10.0.0/24"
+    region           = "asia-south1"
+    secondary_ranges = {}
+  }
+}
+
+firewall_rules = {
+  "allow-ssh" = {
+    protocol      = "tcp"
+    ports         = ["22"]
+    source_ranges = ["0.0.0.0/0"]
+    target_tags   = ["ssh"]
+    priority      = 1000
+    description   = "Allow SSH"
+  }
+}
+
+# -----------------------------
+# Cloud SQL Additional
+# -----------------------------
+users = {
+  "dbadmin" = {
+    password = "replace-with-secret-manager"
+  }
+}
+
+# -----------------------------
+# Optional Feature Toggles
+# -----------------------------
+enable_scheduler         = true
+enable_terraform_locking = true
+
+# -----------------------------
+# Terraform State Bucket
+# -----------------------------
+state_bucket_name = "terraform-state-luxantiq-dev"
+encryption_key_name = "projects/cloud-infra-dev/locations/asia-south1/keyRings/terraform-secrets/cryptoKeys/state-key"
