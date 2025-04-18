@@ -54,9 +54,8 @@ variable "database_connection_name" {
 # Format: { "ENV_VAR_NAME" = "secret-manager-name" }
 variable "secret_env_vars" {
   type        = map(string)
-  description = "Map of ENV variable names to Secret Manager secret names"
+  description = "Mapping of secret environment variable names to Secret Manager secrets"
 }
-
 # VPC Connector used for accessing Cloud SQL privately
 variable "vpc_connector" {
   type        = string

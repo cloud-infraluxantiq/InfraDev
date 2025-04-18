@@ -15,14 +15,6 @@ module "vpc" {
   region     = var.region
 }
 # ------------------------
-# Razor pay api key
-# ------------------------
-#secret_env_vars = {
-#  RAZORPAY_API_KEY    = var.razorpay_api_key_secret
-#  RAZORPAY_API_SECRET = var.razorpay_api_secret_secret
-#}
-
-# ------------------------
 # Cloud Run: Django API
 # ------------------------
 module "cloud_run_django" {
@@ -97,16 +89,15 @@ module "lb" {
 # Cloud DNS + Managed SSL
 # ------------------------
 module "dns_ssl" {
-  source        = "./modules/dns_ssl"
-  project_id    = var.project_id
-  dns_zone      = "luxantiq-com-zone"
-  domain_names  = [
+  source     = "./modules/dns_ssl"
+  project_id = var.project_id
+  dns_zone     = "luxantiq-com-zone"
+  domain_names = [
     var.angular_domain,
     var.django_domain
   ]
-  url_map       = module.lb.url_map_self_link
+  url_map = module.lb.url_map_self_link  # ✅ Required line
 }
-
 # ------------------------
 # Secret Manager
 # ------------------------
