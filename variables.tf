@@ -202,3 +202,7 @@ variable "angular_image_url" {
   description = "Docker image URL for Angular frontend"
   type        = string
 }
+variable "database_connection_name" {
+  description = "Cloud SQL instance connection name"
+  type        = string
+}
