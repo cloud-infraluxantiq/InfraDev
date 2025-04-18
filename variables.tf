@@ -33,12 +33,6 @@ variable "service_account_email" {
   type        = string
   description = "Service account email for IAM bindings"
 }
-
-variable "jenkins_domain" {
-  type        = string
-  description = "Domain used for Jenkins server (if applicable)"
-}
-
 # -------------------------------
 # Firebase Authentication Config
 # -------------------------------
