@@ -31,7 +31,7 @@ databases = ["dev_luxantiq"]
 # -----------------------------
 firebase_project_id   = "cloud-infra-dev-bcf2c"
 firebase_auth_domain  = "cloud-infra-dev-bcf2c.firebaseapp.com"
-firebase_api_key      = "AIzaSyC9XjFtVtRDu5Mq_2xWvrPDNF1tQaECl2k"
+#firebase_api_key      = "AIzaSyC9XjFtVtRDu5Mq_2xWvrPDNF1tQaECl2k"
 
 # -----------------------------
 # Secret Manager References
