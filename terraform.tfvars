@@ -48,6 +48,12 @@ jwt_secret_secret        = "dev-jwt-secret"
 django_secret_key_secret  = "dev-django-secret-key"
 angular_secret_key_secret = "dev-angular-secret-key"
 
+# PostgreSQL users (pulled from Secret Manager at runtime)
+users = {
+  your_postgres_username = {
+    password = var.db_password
+  }
+}
 # ------------------------
 # Firebase Config
 # ------------------------
