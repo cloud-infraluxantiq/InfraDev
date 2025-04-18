@@ -6,9 +6,11 @@
 # ------------------------
 # Google Cloud Project & Region
 # ------------------------
-project_id = "cloud-infra-dev"
-region     = "asia-south1"
-zone       = "asia-south1-b"
+
+
+# Docker image references for Cloud Run services
+django_image_url   = "asia-south1-docker.pkg.dev/cloud-infra-dev/backend/djangoapi:latest"
+angular_image_url  = "asia-south1-docker.pkg.dev/cloud-infra-dev/frontend/angularfrontend:latest"
 
 # ------------------------
 # Cloud Run Services
@@ -49,17 +51,6 @@ django_secret_key = "your_django_secret_key"
 razorpay_api_key    = "your_razorpay_api_key"
 razorpay_api_secret = "your_razorpay_api_secret"
 
-# ------------------------
-# GCS Service Account Key (Base64)
-# ------------------------
-
-# ------------------------
-# Jenkins VM Configuration
-# ------------------------
-machine_type          = "e2-micro"
-network               = "default"
-subnet                = null
-service_account_email = null
 
 # ------------------------
 # Terraform Remote State
