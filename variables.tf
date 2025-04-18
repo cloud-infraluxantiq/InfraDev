@@ -79,10 +79,6 @@ variable "jwt_secret" {
 }
 
 # Reference to Secret Manager entry (already exists in tfvars or secrets)
-variable "django_secret_key_secret" {
-  description = "Secret Manager name for Django SECRET_KEY"
-  type        = string
-}
 
 variable "angular_secret_key_secret" {
   description = "Secret Manager name for Angular secret key (if applicable)"
