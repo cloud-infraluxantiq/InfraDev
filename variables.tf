@@ -22,16 +22,17 @@ variable "project_number" {
   type        = string
   description = "The numeric project ID (used in IAM bindings, policies)"
 }
-###############################################
-# added based on deploymnet error
+# -------------------------------
+# # Subnet and Service account emails
+# -------------------------------
 variable "subnet" {
+  description = "Subnet CIDR or name"
   type        = string
-  description = "Subnet CIDR block"
 }
 
 variable "service_account_email" {
+  description = "Service Account Email used for IAM bindings"
   type        = string
-  description = "Service account email for IAM bindings"
 }
 # -------------------------------
 # Firebase Authentication Config
