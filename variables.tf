@@ -190,3 +190,14 @@ variable "concurrency" {
   type        = number
   description = "Concurrency value for Cloud Run service"
 }
+# Docker image URL for Django (used in cloud_run_django)
+variable "django_image_url" {
+  description = "Docker image URL for Django backend"
+  type        = string
+}
+
+# Docker image URL for Angular (used in cloud_run_angular)
+variable "angular_image_url" {
+  description = "Docker image URL for Angular frontend"
+  type        = string
+}
