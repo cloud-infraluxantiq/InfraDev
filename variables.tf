@@ -221,11 +221,15 @@ variable "nat_region" {
   type        = string
 }
 
-variable "private_network" {
-  description = "VPC self-link for Cloud SQL private IP access"
+variable "vpc_name" {
+  description = "Name of the VPC network"
   type        = string
 }
 
+variable "private_network" {
+  description = "The self-link of the VPC network to connect Cloud SQL"
+  type        = string
+}
 variable "razorpay_api_key_secret" {
   description = "Secret Manager name for Razorpay API key"
   type        = string
