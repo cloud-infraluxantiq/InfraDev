@@ -78,10 +78,17 @@ variable "jwt_secret" {
   description = "JWT signing secret for Django"
 }
 
-variable "django_secret_key" {
+# Reference to Secret Manager entry (already exists in tfvars or secrets)
+variable "django_secret_key_secret" {
+  description = "Secret Manager name for Django SECRET_KEY"
   type        = string
-  description = "Django SECRET_KEY"
 }
+
+variable "angular_secret_key_secret" {
+  description = "Secret Manager name for Angular secret key (if applicable)"
+  type        = string
+}
+
 variable "razorpay_api_key" {
   type        = string
   description = "Razorpay Public Key"
