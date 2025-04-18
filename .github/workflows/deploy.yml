@@ -75,12 +75,10 @@ jobs:
         env:
            TF_WORKSPACE: InfraDev
            TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-       run: |
+        run: |
            terraform init
-           #terraform workspace select "$TF_WORKSPACE" || terraform workspace new "$TF_WORKSPACE"
            terraform plan
            terraform apply -auto-approve
-
 
 
 
