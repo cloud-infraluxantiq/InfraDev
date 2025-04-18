@@ -98,17 +98,18 @@ variable "angular_secret_key_secret" {
   description = "Secret Manager name for Angular secret key (if applicable)"
   type        = string
 }
-
-variable "razorpay_api_key" {
+# --------------------------
+# Razor pay
+# --------------------------
+variable "razorpay_api_key_secret" {
   type        = string
-  description = "Razorpay Public Key"
+  description = "Secret Manager name for Razorpay public key"
 }
 
-variable "razorpay_api_secret" {
+variable "razorpay_api_secret_secret" {
   type        = string
-  description = "Razorpay Secret Key"
+  description = "Secret Manager name for Razorpay private key"
 }
-
 # --------------------------
 # Cloud Run Service Names
 # --------------------------
@@ -242,15 +243,6 @@ variable "django_secret_key_secret" {
   type        = string
 }
 
-variable "razorpay_api_key_secret" {
-  description = "Secret Manager name for Razorpay API key"
-  type        = string
-}
-
-variable "razorpay_api_secret_secret" {
-  description = "Secret Manager name for Razorpay API secret"
-  type        = string
-}
 
 variable "repo_name" {
   description = "Artifact Registry repository name"
