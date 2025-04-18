@@ -206,3 +206,115 @@ variable "database_connection_name" {
   description = "Cloud SQL instance connection name"
   type        = string
 }
+variable "db_name" {
+  description = "Name of the PostgreSQL database"
+  type        = string
+}
+
+variable "db_password_secret" {
+  description = "Secret Manager name for DB password"
+  type        = string
+}
+
+variable "db_user_secret" {
+  description = "Secret Manager name for DB username"
+  type        = string
+}
+
+variable "django_secret_key_secret" {
+  description = "Secret Manager name for Django secret key"
+  type        = string
+}
+
+variable "iam_member" {
+  description = "IAM member for Cloud Run invocation"
+  type        = string
+}
+
+variable "jenkins_domain" {
+  description = "Domain name for Jenkins (if used)"
+  type        = string
+}
+
+variable "nat_region" {
+  description = "Region used for Cloud NAT and Router"
+  type        = string
+}
+
+variable "private_network" {
+  description = "VPC self-link for Cloud SQL private IP access"
+  type        = string
+}
+
+variable "razorpay_api_key_secret" {
+  description = "Secret Manager name for Razorpay API key"
+  type        = string
+}
+
+variable "razorpay_api_secret_secret" {
+  description = "Secret Manager name for Razorpay API secret"
+  type        = string
+}
+
+variable "repo_name" {
+  description = "Artifact Registry repository name"
+  type        = string
+}
+
+variable "tier" {
+  description = "Cloud SQL instance machine tier"
+  type        = string
+}
+
+variable "url_map" {
+  description = "URL map resource for Load Balancer SSL module"
+  type        = string
+}
+
+variable "users" {
+  description = "Map of PostgreSQL users and their passwords"
+  type = map(object({
+    password = string
+  }))
+}
+
+variable "vpc_connector_cidr" {
+  description = "CIDR range for the VPC Serverless connector"
+  type        = string
+}
+
+variable "vpc_connector_region" {
+  description = "Region where VPC connector will be created"
+  type        = string
+}
+
+variable "vpc_name" {
+  description = "Name of the custom VPC"
+  type        = string
+}
+
+variable "firewall_rules" {
+  description = "Map of firewall rule configurations"
+  type = map(object({
+    protocol      = string
+    ports         = list(string)
+    source_ranges = list(string)
+    target_tags   = list(string)
+    priority      = number
+    description   = string
+  }))
+}
+
+variable "databases" {
+  description = "List of PostgreSQL database names to create"
+  type        = list(string)
+}
+
+variable "database_flags" {
+  description = "Database flags for Cloud SQL (e.g. for tuning)"
+  type        = list(object({
+    name  = string
+    value = string
+  }))
+  default = []
+}
