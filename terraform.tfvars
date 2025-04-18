@@ -10,6 +10,10 @@ region         = "asia-south1"
 # ------------------------
 django_image_url = "asia-south1-docker.pkg.dev/cloud-infra-dev/backend/djangoapi:latest"
 angular_image_url = "asia-south1-docker.pkg.dev/cloud-infra-dev/frontend/angularfrontend:latest"
+# ------------------------
+# machine type
+# ------------------------
+machine_type = "e2-micro"  # Or another valid VM type like n2-standard-2
 
 # ------------------------
 # Cloud Run Settings

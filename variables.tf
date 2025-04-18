@@ -33,6 +33,19 @@ variable "iam_member" {
   description = "IAM member for Cloud Run invocation (e.g., serviceAccount:github-deployer@cloud-infra-dev.iam.gserviceaccount.com)"
   type        = string
 }
+# --------------------------
+# JWT secret
+# --------------------------
+variable "secret_env_vars" {
+  description = "Map of secret environment variables (key = ENV_VAR, value = Secret name)"
+  type        = map(string)
+}
+variable "jwt_secret_secret" {
+  description = "Secret Manager name for JWT secret"
+  type        = string
+  default     = "dev-jwt-secret"
+}
+
 # -------------------------------
 # Firebase Configuration
 # -------------------------------
@@ -79,11 +92,6 @@ variable "db_user" {
   default     = "postgres"
   description = "Database user name"
 }
-variable "jwt_secret" {
-  type        = string
-  description = "JWT signing secret for Django"
-}
-
 # Reference to Secret Manager entry (already exists in tfvars or secrets)
 
 variable "angular_secret_key_secret" {
@@ -163,6 +171,7 @@ variable "subnet" {
 variable "machine_type" {
   description = "VM instance machine type"
   type        = string
+  default     = "e2-micro"  # or whatever you intend to use
 }
 
 variable "service_name" {
@@ -170,20 +179,10 @@ variable "service_name" {
   description = "Cloud Run service name for Django"
 }
 
-variable "image_url" {
-  type        = string
-  description = "Docker image URL for Django"
-}
-
 variable "timeout_seconds" {
   type        = number
   description = "Timeout for Cloud Run service"
 }
-variable "secret_env_vars" {
-  type        = map(string)
-  description = "Secrets to inject as environment variables"
-}
-
 variable "vpc_connector" {
   type        = string
   description = "Name of the VPC connector to attach"
@@ -195,15 +194,15 @@ variable "memory_limit" {
 }
 
 # Docker image URL for Django (used in cloud_run_django)
-variable "django_image_url" {
-  description = "Full image path for Django Cloud Run container"
-  type        = string
-}
+#variable "django_image_url" {
+#  description = "Full image path for Django Cloud Run container"
+# type        = string
+#}
 # Docker image URL for Angular (used in cloud_run_angular)
-variable "angular_image_url" {
-  description = "Docker image URL for Angular frontend"
-  type        = string
-}
+#variable "angular_image_url" {
+#  description = "Docker image URL for Angular frontend"
+#  type        = string
+#}
 variable "db_name" {
   description = "Name of the PostgreSQL database"
   type        = string
