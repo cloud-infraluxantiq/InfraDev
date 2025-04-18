@@ -116,8 +116,6 @@ firewall_rules = {
 # Terraform State
 # ------------------------
 state_bucket_name         = "terraform-state-luxantiq-dev"
-enable_terraform_locking  = true
-
 # ------------------------
 # VPC Configuration
 # ------------------------
