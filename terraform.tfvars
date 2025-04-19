@@ -76,7 +76,7 @@ enable_terraform_locking = true
 repo_name = "djangoapi"
 
 # ------------------------
-# VPC rules
+# VPC and firewall rules
 # ------------------------
 
 firewall_rules = {
@@ -179,38 +179,3 @@ databases = [
   "dev_luxantiq"
 ]
 
-
-subnets = {
-  luxantiq-subnet = {
-    cidr             = "10.10.0.0/24"
-    region           = "asia-south1"
-    secondary_ranges = {}
-  }
-}
-
-
-firewall_rules = {
-  allow-http = {
-    description          = "Allow HTTP traffic"
-    direction            = "INGRESS"
-    priority             = 1001
-    ranges               = ["0.0.0.0/0"]
-    allow_protocol_ports = [{
-      protocol = "tcp"
-      ports    = ["80"]
-    }]
-    target_tags = ["http-server"]
-  }
-
-  allow-https = {
-    description          = "Allow HTTPS traffic"
-    direction            = "INGRESS"
-    priority             = 1002
-    ranges               = ["0.0.0.0/0"]
-    allow_protocol_ports = [{
-      protocol = "tcp"
-      ports    = ["443"]
-    }]
-    target_tags = ["https-server"]
-  }
-}
