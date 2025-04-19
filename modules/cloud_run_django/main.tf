@@ -31,15 +31,16 @@ env {
   }
 }
 
-        container_concurrency = var.concurrency
-        timeout_seconds       = var.timeout_seconds
-
-        vpc_access {
-          connector = var.vpc_connector
-          egress    = "ALL_TRAFFIC"
-        }
-      }
+template {
+  spec {
+    containers {
+      # image, env, ports, etc.
     }
+
+    container_concurrency = var.concurrency
+    timeout_seconds       = var.timeout_seconds
+  }
+}
 
     metadata {
       annotations = {
