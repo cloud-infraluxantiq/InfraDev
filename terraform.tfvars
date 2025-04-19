@@ -107,19 +107,6 @@ allow-http = {
       }
     ]
   }
-
-  allow-ssh = {
-    description          = "Allow SSH from anywhere"
-    direction            = "INGRESS"
-    priority             = 1000
-    ranges               = ["0.0.0.0/0"]
-    allow_protocol_ports = [
-      {
-        protocol = "tcp"
-        ports    = ["22"]
-      }
-    ]
-  }
 }
 
 # ------------------------
