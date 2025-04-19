@@ -4,6 +4,12 @@
 ############################################################
 
 # Name of the custom VPC
+
+variable "project_id" {
+  type        = string
+  description = "Google Cloud Project ID"
+}
+
 variable "vpc_name" {
   description = "Name of the VPC network"
   type        = string
