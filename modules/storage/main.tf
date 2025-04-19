@@ -1,6 +1,5 @@
 ############################################################
 # Luxantiq Storage Module
-# Provisions GCS buckets with IAM, CORS, Retention, Logging
 ############################################################
 
 resource "google_storage_bucket" "buckets" {
