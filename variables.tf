@@ -40,6 +40,12 @@ variable "django_image_url" {
   type        = string
   description = "Docker image URL for Django"
 }
+variable "env_vars" {
+  type = map(object({
+    key   = string
+    value = string
+  }))
+}
 # --------------------------
 # IAM
 # --------------------------
