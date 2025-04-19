@@ -15,12 +15,9 @@ data "google_secret_manager_secret_version" "service_account_email" {
   secret  = var.service_account_email_secret
   project = var.project_id
 }
-
 locals {
   service_account_email = data.google_secret_manager_secret_version.service_account_email.secret_data
 }
-
-
 # ------------------------
 # Google Provider Setup
 # ------------------------
@@ -100,7 +97,7 @@ module "sql_postgres" {
   db_user                = var.db_user
   db_password_secret     = var.db_password_secret
   database_flags         = var.database_flags
-  service_account_email  = var.service_account_email
+  service_account_email = local.service_account_email
 }
 
 # ------------------------

@@ -69,6 +69,6 @@ resource "google_sql_database" "databases" {
 # ✅ IAM binding for SQL Admin (e.g., to GitHub deployer SA)
 resource "google_project_iam_member" "cloudsql_admin" {
   role    = "roles/cloudsql.admin"
-  member  = "serviceAccount:${var.service_account_email}"
+  member = "serviceAccount:${local.service_account_email}"
   project = var.project_id
 }
