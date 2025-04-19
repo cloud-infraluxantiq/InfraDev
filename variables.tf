@@ -36,12 +36,10 @@ variable "angular_image_url" {
   type        = string
   description = "Image URL for Angular frontend"
 }
-
-variable "django_domain" {
+variable "django_image_url" {
   type        = string
-  description = "Custom domain for Django backend"
+  description = "Docker image URL for Django"
 }
-
 # --------------------------
 # IAM
 # --------------------------
@@ -206,22 +204,20 @@ variable "timeout_seconds" {
 # --------------------------
 # VPC
 # --------------------------
+variable "vpc_name" {
+  type = string
+}
+
+variable "vpc_connector_cidr" {
+  type = string
+}
 variable "vpc_connector" {
   type        = string
   description = "Name of the VPC connector to attach"
 }
-variable "vpc_connector_cidr" {
-  description = "CIDR range for the VPC Serverless connector"
-  type        = string
-}
-
 variable "vpc_connector_region" {
   type        = string
   description = "Region to deploy VPC connector"
-}
-variable "vpc_name" {
-  description = "Name of the VPC network"
-  type        = string
 }
 variable "private_network" {
   description = "The self-link of the VPC network to connect Cloud SQL"
@@ -230,6 +226,38 @@ variable "private_network" {
 variable "nat_region" {
   description = "Region used for Cloud NAT and Router"
   type        = string
+}
+# --------------------------
+# FIrewall
+# --------------------------
+
+variable "firewall_rules" {
+  description = "Map of firewall rules with advanced protocol support"
+  type = map(object({
+    description          = string
+    direction            = string
+    priority             = number
+    ranges               = list(string)
+    allow_protocol_ports = list(object({
+      protocol = string
+      ports    = list(string)
+    }))
+    target_tags = list(string)
+  }))
+}
+
+variable "databases" {
+  description = "List of PostgreSQL database names to create"
+  type        = list(string)
+}
+
+variable "database_flags" {
+  description = "Database flags for Cloud SQL (e.g. for tuning)"
+  type        = list(object({
+    name  = string
+    value = string
+  }))
+  default = []
 }
 
 # --------------------------
@@ -270,33 +298,32 @@ variable "users" {
   }))
 }
 # --------------------------
-# FIrewall
+# Disk size 
 # --------------------------
 
-variable "firewall_rules" {
-  description = "Map of firewall rule configurations"
-  type        = map(object({
-    description          = string
-    direction            = string
-    priority             = number
-    ranges               = list(string)
-    allow_protocol_ports = list(object({
-      protocol = string
-      ports    = list(string)
-    }))
+variable "disk_size" {
+  type        = number
+  description = "Disk size for the Cloud SQL instance"
+}
+# ----------------------------
+# Added for VPC compatibility
+# ----------------------------
+variable "subnets" {
+  description = "Map of subnets with CIDR, region, and optional secondary ranges"
+  type = map(object({
+    cidr             = string
+    region           = string
+    secondary_ranges = map(string)
   }))
 }
 
-variable "databases" {
-  description = "List of PostgreSQL database names to create"
-  type        = list(string)
+
+variable "encryption_key_name" {
+  type        = string
+  description = "KMS key for SQL instance encryption"
 }
 
-variable "database_flags" {
-  description = "Database flags for Cloud SQL (e.g. for tuning)"
-  type        = list(object({
-    name  = string
-    value = string
-  }))
-  default = []
+variable "service_account_email" {
+  type        = string
+  description = "Service account to use for SQL or other services"
 }

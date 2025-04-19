@@ -52,12 +52,6 @@ users = {
     password = "your-db-password"  # Or load via secrets as string
   }
 }
-# ------------------------
-# Firebase Config
-# ------------------------
-#firebase_project_id   = "cloud-infra-dev-bcf2c"
-#firebase_auth_domain  = "cloud-infra-dev-bcf2c.firebaseapp.com"
-#firebase_api_key      = "AIzaSyC9XjFtVtRDu5Mq_2xWvrPDNF1tQaECl2k"
 
 # ------------------------
 # Razorpay Secrets
@@ -82,7 +76,7 @@ enable_terraform_locking = true
 repo_name = "djangoapi"
 
 # ------------------------
-# VPC rules
+# VPC and firewall rules
 # ------------------------
 
 firewall_rules = {
@@ -97,6 +91,7 @@ firewall_rules = {
         ports    = ["22"]
       }
     ]
+    target_tags = ["ssh-access"]
   }
 
   allow-http = {
@@ -110,8 +105,24 @@ firewall_rules = {
         ports    = ["80"]
       }
     ]
+    target_tags = ["http-server"]
+  }
+
+  allow-https = {
+    description          = "Allow HTTPS traffic"
+    direction            = "INGRESS"
+    priority             = 1002
+    ranges               = ["0.0.0.0/0"]
+    allow_protocol_ports = [
+      {
+        protocol = "tcp"
+        ports    = ["443"]
+      }
+    ]
+    target_tags = ["https-server"]
   }
 }
+
 # ------------------------
 # Terraform State
 # ------------------------
@@ -126,6 +137,14 @@ vpc_connector_cidr   = "10.8.0.0/28"
 subnet               = "default"
 private_network = "projects/cloud-infra-dev/global/networks/luxantiq-vpc"
 vpc_connector        = "luxantiq-vpc-connector"
+
+subnets = [
+  {
+    name          = "luxantiq-subnet"
+    ip_cidr_range = "10.10.0.0/24"
+    region        = "asia-south1"
+  }
+]
 
 # ------------------------
 # IAM
@@ -159,3 +178,4 @@ service_accounts = {
 databases = [
   "dev_luxantiq"
 ]
+

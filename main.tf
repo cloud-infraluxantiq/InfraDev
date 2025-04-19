@@ -10,10 +10,15 @@ provider "google" {
 # VPC + Subnet
 # ------------------------
 module "vpc" {
-  source     = "./modules/vpc"
-  project_id = var.project_id
-  region     = var.region
+  source                = "./modules/vpc"
+  vpc_name              = var.vpc_name
+  vpc_connector_region  = var.region
+  vpc_connector_cidr    = var.vpc_connector_cidr
+  nat_region            = var.region
+  subnets               = var.subnets
+  firewall_rules        = var.firewall_rules
 }
+
 # ------------------------
 # Cloud Run: Django API
 # ------------------------
@@ -37,43 +42,43 @@ module "cloud_run_django" {
     RAZORPAY_API_SECRET   = var.razorpay_api_secret_secret
   }
 }
+
 # ------------------------
 # Cloud Run: Angular Frontend
 # ------------------------
 module "cloud_run_angular" {
-  source        = "./modules/cloud_run_angular"
-  project_id    = var.project_id
-  region        = var.region
-  service_name  = var.cloud_run_angular_service_name
-  image_url     = var.angular_image_url
+  source          = "./modules/cloud_run_angular"
+  project_id      = var.project_id
+  region          = var.region
+  service_name    = var.cloud_run_angular_service_name
+  image_url       = var.angular_image_url
   timeout_seconds = 300
-  memory_limit  = "512Mi"
-  concurrency   = 80
-  custom_domain = var.angular_domain
-  iam_member    = "allUsers"
+  memory_limit    = "512Mi"
+  concurrency     = 80
+  custom_domain   = var.angular_domain
+  iam_member      = "allUsers"
 }
 
 # ------------------------
 # SQL (PostgreSQL)
 # ------------------------
 module "sql_postgres" {
-  source     = "./modules/sql_postgres"
-  project_id = var.project_id
-  region     = var.region
-
-  # ✅ REQUIRED
-  instance_name           = var.cloud_sql_instance_name
-  tier                    = var.tier
-  disk_size               = var.disk_size
-  private_network         = module.vpc.vpc_self_link
-  encryption_key_name     = var.encryption_key_name
-  databases               = var.databases
-  users                   = var.users
-  db_user                 = var.db_user                        # ✅ add this
-  db_password_secret      = var.db_password_secret             # ✅ add this
-  database_flags          = var.database_flags
-  service_account_email   = var.service_account_email
+  source                 = "./modules/sql_postgres"
+  project_id             = var.project_id
+  region                 = var.region
+  instance_name          = var.cloud_sql_instance_name
+  tier                   = var.tier
+  disk_size              = var.disk_size
+  private_network        = module.vpc.vpc_self_link
+  encryption_key_name    = var.encryption_key_name
+  databases              = var.databases
+  users                  = var.users
+  db_user                = var.db_user
+  db_password_secret     = var.db_password_secret
+  database_flags         = var.database_flags
+  service_account_email  = var.service_account_email
 }
+
 # ------------------------
 # Load Balancer + SSL
 # ------------------------
@@ -89,22 +94,14 @@ module "lb" {
 # Cloud DNS + Managed SSL
 # ------------------------
 module "dns_ssl" {
-  source     = "./modules/dns_ssl"
-  project_id = var.project_id
+  source       = "./modules/dns_ssl"
+  project_id   = var.project_id
   dns_zone     = "luxantiq-com-zone"
   domain_names = [
     var.angular_domain,
     var.django_domain
   ]
-  url_map = module.lb.url_map_self_link  # ✅ Required line
-}
-# ------------------------
-# Secret Manager
-# ------------------------
-module "secrets" {
-  source     = "./modules/secrets"
-  project_id = var.project_id
-  region     = var.region
+  url_map = module.lb.url_map_self_link
 }
 
 # ------------------------
@@ -113,6 +110,5 @@ module "secrets" {
 module "monitoring" {
   source        = "./modules/monitoring"
   project_id    = var.project_id
-  django_domain = var.django_domain  # ✅ required
+  django_domain = var.django_domain
 }
-
