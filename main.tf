@@ -10,9 +10,13 @@ provider "google" {
 # VPC + Subnet
 # ------------------------
 module "vpc" {
-  source     = "./modules/vpc"
-  project_id = var.project_id
-  region     = var.region
+  source                = "./modules/vpc"
+  vpc_name              = var.vpc_name
+  vpc_connector_region  = var.region
+  vpc_connector_cidr    = var.vpc_connector_cidr
+  nat_region            = var.region
+  subnets               = var.subnets
+  firewall_rules        = var.firewall_rules
 }
 
 # ------------------------
