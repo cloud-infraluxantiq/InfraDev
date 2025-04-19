@@ -65,14 +65,17 @@ resource "google_compute_firewall" "allow_rules" {
   network = google_compute_network.custom_vpc.name
   project = var.project_id
 
-  allow {
-    protocol = each.value.protocol
-    ports    = each.value.ports
-  }
+  description = each.value.description
+  direction   = each.value.direction
+  priority    = each.value.priority
+  target_tags = each.value.target_tags
+  source_ranges = each.value.ranges
 
-  direction     = "INGRESS"
-  source_ranges = each.value.source_ranges
-  target_tags   = each.value.target_tags
-  priority      = each.value.priority
-  description   = each.value.description
+  dynamic "allow" {
+    for_each = each.value.allow_protocol_ports
+    content {
+      protocol = allow.value.protocol
+      ports    = allow.value.ports
+    }
+  }
 }
