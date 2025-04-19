@@ -127,7 +127,9 @@ firewall_rules = {
 # ------------------------
 # Terraform State
 # ------------------------
+
 state_bucket_name         = "terraform-state-luxantiq-dev"
+
 # ------------------------
 # VPC Configuration
 # ------------------------
@@ -138,14 +140,16 @@ vpc_connector_cidr   = "10.8.0.0/28"
 subnet               = "default"
 private_network = "projects/cloud-infra-dev/global/networks/luxantiq-vpc"
 vpc_connector        = "luxantiq-vpc-connector"
-
-subnets = [
-  {
-    name          = "luxantiq-subnet"
-    ip_cidr_range = "10.10.0.0/24"
-    region        = "asia-south1"
+# ------------------------
+# Subnet block
+# ------------------------
+subnets = {
+  "subnet-1" = {
+    cidr              = "10.10.0.0/24"
+    region            = "asia-south1"
+    secondary_ranges  = {}
   }
-]
+}
 
 # ------------------------
 # IAM
