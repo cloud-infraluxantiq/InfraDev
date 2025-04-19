@@ -95,7 +95,7 @@ firewall_rules = {
     target_tags = ["ssh-access"]
   }
 
-allow-http = {
+  allow-http = {
     description          = "Allow HTTP traffic"
     direction            = "INGRESS"
     priority             = 1000
@@ -106,21 +106,10 @@ allow-http = {
         ports    = ["80"]
       }
     ]
-  }
-
-  allow-ssh = {
-    description          = "Allow SSH from anywhere"
-    direction            = "INGRESS"
-    priority             = 1000
-    ranges               = ["0.0.0.0/0"]
-    allow_protocol_ports = [
-      {
-        protocol = "tcp"
-        ports    = ["22"]
-      }
-    ]
+    target_tags = ["http-server"]  # ✅ Add this line
   }
 }
+
 
 # ------------------------
 # Terraform State
