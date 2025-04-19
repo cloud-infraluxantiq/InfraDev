@@ -32,7 +32,11 @@ resource "google_sql_database_instance" "postgres_instance" {
     ip_configuration {
       ipv4_enabled          = false
       private_network       = var.private_network
-      require_ssl           = true
+      ip_configuration {
+  ipv4_enabled = true
+  require_ssl  = true
+  private_network = var.private_network
+}
     }
 
     dynamic "database_flags" {
