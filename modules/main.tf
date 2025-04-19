@@ -1,3 +1,6 @@
+# ------------------------
+# terraform
+# ------------------------
 terraform {
   required_version = ">= 1.4.0"
 
@@ -9,6 +12,17 @@ terraform {
     }
   }
 }
+# ------------------------
+# define project
+# ------------------------
+variable "project_id" {
+  type        = string
+  description = "Project ID for creating the VPC"
+}
+
+# ------------------------
+# Core Infrastructure Modules
+# ------------------------
 
 provider "google" {
   credentials = file("terraform-sa-key.json")

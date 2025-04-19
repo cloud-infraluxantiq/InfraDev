@@ -4,6 +4,12 @@
 ############################################################
 
 # Name of the custom VPC
+
+variable "project_id" {
+  type        = string
+  description = "Google Cloud Project ID"
+}
+
 variable "vpc_name" {
   description = "Name of the VPC network"
   type        = string
@@ -40,13 +46,15 @@ variable "vpc_connector_cidr" {
 
 # Map of firewall rule definitions keyed by rule name
 variable "firewall_rules" {
-  description = "Map of firewall rule configurations (allow ingress)"
   type = map(object({
-    protocol      = string
-    ports         = list(string)
-    source_ranges = list(string)
-    target_tags   = list(string)
-    priority      = number
-    description   = string
+    description          = string
+    direction            = string
+    priority             = number
+    ranges               = list(string)
+    allow_protocol_ports = list(object({
+      protocol = string
+      ports    = list(string)
+    }))
+    target_tags = list(string)
   }))
 }
