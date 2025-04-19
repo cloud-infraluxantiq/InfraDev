@@ -80,9 +80,8 @@ jobs:
                    
             
             # Secrets: Passed as GCP Secret Manager names
-            TF_VAR_project_number: ${{ secrets.PROJECT_NUMBER }}
-            TF_VAR_project_id: ${{ secrets.TF_VAR_project_id }}
-            TF_VAR_env_vars: ${{ secrets.TF_VAR_env_vars }}
+            TF_VAR_project_number: "PROJECT_NUMBER"
+            TF_VAR_project_id: "TF_VAR_PROJECT_ID"
             TF_VAR_db_password_secret: "dev-db-password"
             TF_VAR_db_user_secret: "dev-db-user"
             TF_VAR_jwt_secret_secret: "dev-jwt-secret"
