@@ -81,3 +81,10 @@ resource "google_compute_url_map" "default" {
     }
   }
 }
+# reserve a static global IP for your HTTPS Load Balancer
+
+resource "google_compute_global_address" "lb_ip" {
+  name         = "lb-ip-address"
+  address_type = "EXTERNAL"
+  ip_version   = "IPV4"
+}
