@@ -1,19 +1,12 @@
 ############################################################
 # Input Variables: Luxantiq Storage Module
-# Supports advanced GCS bucket configuration per use case
 ############################################################
 
 variable "buckets" {
   description = "A map of named bucket configurations and IAM policies"
 
   type = map(object({
-    # GCS Bucket Basics
-    name             = string         # Globally unique bucket name
-    location         = string         # e.g., asia-south1
-    ubla             = bool           # Uniform Bucket Level Access
-    versioning       = bool           # Enable object versioning
-
-    # Retention Policy
+      # Retention Policy
     retention_days   = number         # How long (in days) to retain objects
     retention_locked = bool           # Whether the retention policy is locked
 
