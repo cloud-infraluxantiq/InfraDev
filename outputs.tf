@@ -37,7 +37,7 @@ output "cloud_sql_connection_name" {
   value       = module.sql_postgres.connection_name
   description = "Cloud SQL connection string"
 }
-output "debug_env_vars_keys" {
-  description = "Keys present in env_vars (environment variable names for Cloud Run)"
-  value       = keys(var.env_vars)
+output "debug_secret_env_vars_keys" {
+  description = "Keys present in secret_env_vars (injected from Secret Manager)"
+  value       = keys(var.secret_env_vars)
 }
