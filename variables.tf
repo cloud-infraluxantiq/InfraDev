@@ -166,20 +166,6 @@ variable "service_accounts" {
 }
 
 # --------------------------
-# Terraform State Bucket
-# --------------------------
-variable "state_bucket_name" {
-  type        = string
-  default     = "terraform-state-luxantiq-dev"
-  description = "GCS bucket for Terraform remote state"
-}
-variable "enable_terraform_locking" {
-  description = "Enable locking for Terraform remote state"
-  type        = bool
-  default     = true
-}
-
-# --------------------------
 # Optional Feature Flags
 # --------------------------
 variable "enable_scheduler" {
