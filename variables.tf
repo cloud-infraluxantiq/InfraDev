@@ -211,14 +211,6 @@ variable "vpc_name" {
 variable "vpc_connector_cidr" {
   type = string
 }
-
-variable "subnets" {
-  type = list(object({
-    name          = string
-    ip_cidr_range = string
-    region        = string
-  }))
-}
 variable "vpc_connector" {
   type        = string
   description = "Name of the VPC connector to attach"
@@ -240,8 +232,8 @@ variable "nat_region" {
 # --------------------------
 
 variable "firewall_rules" {
-  description = "Map of firewall rule configurations"
-  type        = map(object({
+  description = "Map of firewall rules with advanced protocol support"
+  type = map(object({
     description          = string
     direction            = string
     priority             = number
@@ -250,6 +242,7 @@ variable "firewall_rules" {
       protocol = string
       ports    = list(string)
     }))
+    target_tags = list(string)
   }))
 }
 
@@ -312,11 +305,6 @@ variable "disk_size" {
   type        = number
   description = "Disk size for the Cloud SQL instance"
 }
-
-
-
-
-
 # ----------------------------
 # Added for VPC compatibility
 # ----------------------------
@@ -329,20 +317,6 @@ variable "subnets" {
   }))
 }
 
-variable "firewall_rules" {
-  description = "Map of firewall rules with advanced protocol support"
-  type = map(object({
-    description          = string
-    direction            = string
-    priority             = number
-    ranges               = list(string)
-    allow_protocol_ports = list(object({
-      protocol = string
-      ports    = list(string)
-    }))
-    target_tags = list(string)
-  }))
-}
 
 variable "encryption_key_name" {
   type        = string
