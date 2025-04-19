@@ -19,3 +19,9 @@ output "vpc_connector_name" {
   description = "Name of the VPC Serverless Access Connector"
   value       = google_vpc_access_connector.vpc_connector.name
 }
+
+# Self link output for SQL connection
+output "vpc_self_link" {
+  description = "Self link of the custom VPC"
+  value       = google_compute_network.custom_vpc.self_link
+}
