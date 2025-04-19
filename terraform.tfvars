@@ -3,7 +3,6 @@
 # ------------------------
 project_id     = "cloud-infra-dev"
 region         = "asia-south1"
-#project_number = "398990037605"
 angular_domain = "shop.dev.angular.luxantiq.com"
 django_domain  = "api.dev.django.luxantiq.com"
 dns_zone       = "luxantiq-com-zone"
