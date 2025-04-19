@@ -49,13 +49,6 @@ resource "google_sql_database_instance" "postgres_instance" {
   encryption_key_name   = var.encryption_key_name
 }
 
-
-# ✅ Securely fetch DB password from Secret Manager
-data "google_secret_manager_secret_version" "db_password" {
-  secret  = var.db_password_secret
-  project = var.project_id
-}
-
 # ✅ Create DB user (e.g., postgres) using password from Secret Manager
 resource "google_sql_user" "postgres_user" {
   name     = var.db_user
