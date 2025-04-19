@@ -12,12 +12,6 @@ data "google_secret_manager_secret_version" "project_id" {
   project = var.project_id
 }
 
-# Project Number
-data "google_secret_manager_secret_version" "project_number" {
-  secret  = var.project_number_secret
-  project = var.project_id
-}
-
 # DB Password
 data "google_secret_manager_secret_version" "db_password" {
   secret  = var.db_password_secret
