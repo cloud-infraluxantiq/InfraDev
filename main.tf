@@ -16,6 +16,7 @@ module "vpc" {
   vpc_connector_cidr    = var.vpc_connector_cidr
   nat_region            = var.region
   subnets               = var.subnets
+  project_id            = var.project_id
   firewall_rules        = var.firewall_rules
 }
 
