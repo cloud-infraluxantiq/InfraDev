@@ -138,17 +138,4 @@ resource "google_secret_manager_secret_version" "razorpay_api_secret_version" {
   project     = var.project_id
 }
 
-# ---------------------------
-# GCS Service Key (base64-encoded)
-# ---------------------------
-resource "google_secret_manager_secret" "gcs_service_key" {
-  secret_id = "dev-gcs-service-key"
-  replication { automatic = true }
-  project    = var.project_id
-}
 
-resource "google_secret_manager_secret_version" "gcs_service_key_version" {
-  secret      = google_secret_manager_secret.gcs_service_key.id
-  secret_data = var.gcs_service_key
-  project     = var.project_id
-}
