@@ -95,10 +95,10 @@ firewall_rules = {
     target_tags = ["ssh-access"]
   }
 
-  allow-http = {
+allow-http = {
     description          = "Allow HTTP traffic"
     direction            = "INGRESS"
-    priority             = 1001
+    priority             = 1000
     ranges               = ["0.0.0.0/0"]
     allow_protocol_ports = [
       {
@@ -106,21 +106,19 @@ firewall_rules = {
         ports    = ["80"]
       }
     ]
-    target_tags = ["http-server"]
   }
 
-  allow-https = {
-    description          = "Allow HTTPS traffic"
+  allow-ssh = {
+    description          = "Allow SSH from anywhere"
     direction            = "INGRESS"
-    priority             = 1002
+    priority             = 1000
     ranges               = ["0.0.0.0/0"]
     allow_protocol_ports = [
       {
         protocol = "tcp"
-        ports    = ["443"]
+        ports    = ["22"]
       }
     ]
-    target_tags = ["https-server"]
   }
 }
 
