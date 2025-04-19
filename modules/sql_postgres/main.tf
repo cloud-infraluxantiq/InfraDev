@@ -31,8 +31,11 @@ resource "google_sql_database_instance" "postgres_instance" {
 
     ip_configuration {
       ipv4_enabled    = true
-      require_ssl     = true
       private_network = var.private_network
+
+      require_ssl {
+        enabled = true
+      }
     }
 
     dynamic "database_flags" {
@@ -47,6 +50,7 @@ resource "google_sql_database_instance" "postgres_instance" {
   deletion_protection   = true
   encryption_key_name   = var.encryption_key_name
 }
+
 
 # ✅ Securely fetch DB password from Secret Manager
 data "google_secret_manager_secret_version" "db_password" {
