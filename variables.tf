@@ -247,11 +247,6 @@ variable "tier" {
   type        = string
 }
 
-variable "url_map" {
-  description = "URL map resource for Load Balancer SSL module"
-  type        = string
-}
-
 variable "users" {
   description = "Map of PostgreSQL users and their passwords"
   type = map(object({
