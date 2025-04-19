@@ -1,9 +1,11 @@
+
 ############################################################ #
 #Cloud Run : Django API Deployment(Luxantiq)
 #- Deploys Docker container with secrets injected from Secret Manager
 #- Connects to Cloud SQL via VPC connector
 #- Secured via IAM(e.g., Firebase Auth)
-    ############################################################ #
+############################################################ #
+
 resource "google_cloud_run_service" "django" {
   name     = var.service_name
   location = var.region
@@ -21,26 +23,25 @@ resource "google_cloud_run_service" "django" {
         }
 
      dynamic "env" {
-          for_each = var.secret_env_vars
-          content {
-            name = env.key
-            value_from {
-              secret_key_ref {
-                secret  = env.value
-                version = "latest"
-              }
-            }
-          }
-        }
+  for_each = var.env_vars
+  content {
+    name = env.value.key
+    value_from {
+      secret_key_ref {
+        name = env.value.value
+        key  = "latest"
+      }
+    }
+  }
+}
 
-        container_concurrency = var.concurrency
-        timeout_seconds       = var.timeout_seconds
-
-        vpc_access {
-          connector = var.vpc_connector
-          egress    = "ALL_TRAFFIC"
+        ports {
+          container_port = 8080
         }
       }
+
+      container_concurrency = var.concurrency
+      timeout_seconds       = var.timeout_seconds
     }
 
     metadata {
@@ -69,4 +70,3 @@ resource "google_cloud_run_service_iam_member" "firebase_auth" {
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
-              
