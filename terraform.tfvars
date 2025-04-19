@@ -91,6 +91,7 @@ firewall_rules = {
         ports    = ["22"]
       }
     ]
+    target_tags = ["ssh-access"]
   }
 
   allow-http = {
@@ -104,8 +105,24 @@ firewall_rules = {
         ports    = ["80"]
       }
     ]
+    target_tags = ["http-server"]
+  }
+
+  allow-https = {
+    description          = "Allow HTTPS traffic"
+    direction            = "INGRESS"
+    priority             = 1002
+    ranges               = ["0.0.0.0/0"]
+    allow_protocol_ports = [
+      {
+        protocol = "tcp"
+        ports    = ["443"]
+      }
+    ]
+    target_tags = ["https-server"]
   }
 }
+
 # ------------------------
 # Terraform State
 # ------------------------
@@ -120,6 +137,14 @@ vpc_connector_cidr   = "10.8.0.0/28"
 subnet               = "default"
 private_network = "projects/cloud-infra-dev/global/networks/luxantiq-vpc"
 vpc_connector        = "luxantiq-vpc-connector"
+
+subnets = [
+  {
+    name          = "luxantiq-subnet"
+    ip_cidr_range = "10.10.0.0/24"
+    region        = "asia-south1"
+  }
+]
 
 # ------------------------
 # IAM
