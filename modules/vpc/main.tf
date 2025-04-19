@@ -12,21 +12,21 @@ resource "google_compute_network" "custom_vpc" {
 }
 
 resource "google_compute_subnetwork" "subnets" {
-  for_each               = var.subnets
-  name                   = each.key
-  ip_cidr_range          = each.value.cidr
-  region                 = each.value.region
-  network                = google_compute_network.custom_vpc.id
-  private_ip_google_access = true
-  project                = var.project_id
-  dynamic "secondary_ip_range" {
-  for_each = each.value.secondary_ranges
-  content {
-    range_name    = secondary_ip_range.key
-    ip_cidr_range = secondary_ip_range.value
-  }
-}
+  for_each                  = var.subnets
+  name                      = each.key
+  ip_cidr_range             = each.value.cidr
+  region                    = each.value.region
+  network                   = google_compute_network.custom_vpc.id
+  private_ip_google_access  = true
+  project                   = var.project_id
 
+  dynamic "secondary_ip_range" {
+    for_each = each.value.secondary_ranges
+    content {
+      range_name    = secondary_ip_range.key
+      ip_cidr_range = secondary_ip_range.value
+    }
+  }
 }
 
 resource "google_compute_router" "nat_router" {
