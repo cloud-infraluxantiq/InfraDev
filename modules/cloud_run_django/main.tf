@@ -20,18 +20,16 @@ resource "google_cloud_run_service" "django" {
           }
         }
 
-     dynamic "env" {
-          for_each = var.secret_env_vars
-          content {
-            name = env.key
-            value_from {
-              secret_key_ref {
-                secret  = env.value
-                version = "latest"
-              }
-            }
-          }
-        }
+ 
+env {
+  name = env.key
+  value_from {
+    secret_key_ref {
+      name = env.value    # Secret name from Secret Manager
+      key  = "latest"     # Versioned key or default key inside the secret
+    }
+  }
+}
 
         container_concurrency = var.concurrency
         timeout_seconds       = var.timeout_seconds
