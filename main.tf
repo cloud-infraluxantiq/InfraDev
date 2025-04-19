@@ -112,3 +112,19 @@ module "monitoring" {
   project_id    = var.project_id
   django_domain = var.django_domain
 }
+#configure Cloud DNS A records using your static IP (lb_ip_address) from the Load Balancer module
+resource "google_dns_record_set" "angular_dns" {
+  name         = "${var.angular_domain}."
+  managed_zone = var.dns_zone
+  type         = "A"
+  ttl          = 300
+  rrdatas      = [module.lb.lb_ip_address]
+}
+
+resource "google_dns_record_set" "django_dns" {
+  name         = "${var.django_domain}."
+  managed_zone = var.dns_zone
+  type         = "A"
+  ttl          = 300
+  rrdatas      = [module.lb.lb_ip_address]
+}
