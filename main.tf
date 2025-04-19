@@ -159,7 +159,3 @@ data "google_secret_manager_secret_version" "service_account_email" {
   project = var.project_id
 }
 
-locals {
-  service_account_email = data.google_secret_manager_secret_version.service_account_email.secret_data
-}
-
