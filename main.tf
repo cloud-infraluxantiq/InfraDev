@@ -111,7 +111,8 @@ module "secrets" {
 # Monitoring (Uptime Check)
 # ------------------------
 module "monitoring" {
-  source     = "./modules/monitoring"
-  project_id = var.project_id
-  region     = var.region
+  source        = "./modules/monitoring"
+  project_id    = var.project_id
+  django_domain = var.django_domain  # ✅ required
 }
+
