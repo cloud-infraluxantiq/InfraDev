@@ -40,12 +40,6 @@ variable "django_image_url" {
   type        = string
   description = "Docker image URL for Django"
 }
-variable "env_vars" {
-  type = map(object({
-    key   = string
-    value = string
-  }))
-}
 # --------------------------
 # IAM
 # --------------------------
@@ -122,6 +116,20 @@ variable "angular_secret_key_secret" {
   description = "Secret Manager name for Angular secret key (if applicable)"
   type        = string
 }
+variable "project_number_secret" {
+  type        = string
+  description = "Secret Manager name for GCP project number"
+}
+
+variable "project_id_secret" {
+  type        = string
+  description = "Secret Manager name for GCP project ID"
+}
+
+variable "service_account_email_secret" {
+  type        = string
+  description = "Secret Manager name for the GCP service account email"
+}
 # --------------------------
 # Razor pay
 # --------------------------
@@ -169,20 +177,6 @@ variable "service_accounts" {
     role         = string
     create_key   = bool
   }))
-}
-
-# --------------------------
-# Terraform State Bucket
-# --------------------------
-variable "state_bucket_name" {
-  type        = string
-  default     = "terraform-state-luxantiq-dev"
-  description = "GCS bucket for Terraform remote state"
-}
-variable "enable_terraform_locking" {
-  description = "Enable locking for Terraform remote state"
-  type        = bool
-  default     = true
 }
 
 # --------------------------

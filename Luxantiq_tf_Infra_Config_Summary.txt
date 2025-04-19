@@ -34,7 +34,6 @@
 # dev-django-secret-key   : Django SECRET_KEY
 # dev-razorpay-api-key    : Razorpay public key
 # dev-razorpay-api-secret : Razorpay private key
-# dev-gcs-service-key     : Base64 encoded GCP service account key
 # 
 # 🪣 Cloud Storage Buckets
 # -------------------------

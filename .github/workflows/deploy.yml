@@ -76,12 +76,11 @@ jobs:
             TF_WORKSPACE: ${{ secrets.WORKSPACE }}
             TF_CLOUD_ORGANIZATION: ${{ secrets.CLOUD_ORGANIZATION }}
             TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-            TF_VAR_project_number: ${{ secrets.PROJECT_NUMBER }}
             TF_VAR_service_account_email: ${{ secrets.service_account_email }}
-            TF_VAR_project_id: ${{ secrets.TF_VAR_project_id }}
-            TF_VAR_env_vars: ${{ secrets.TF_VAR_env_vars }}
-            
+
             # Secrets: Passed as GCP Secret Manager names
+            TF_VAR_project_number_secret: "dev-project-number"
+            TF_VAR_project_id_secret: "dev-project-id"
             TF_VAR_db_password_secret: "dev-db-password"
             TF_VAR_db_user_secret: "dev-db-user"
             TF_VAR_jwt_secret_secret: "dev-jwt-secret"
@@ -91,13 +90,9 @@ jobs:
             TF_VAR_firebase_api_key: "dev-firebase-api-key"
             TF_VAR_firebase_project_id: "dev-firebase-project-id"
             TF_VAR_firebase_auth_domain: "dev-firebase-auth-domain"
-            
+
         run: |
            terraform init
            terraform plan
            terraform apply -auto-approve
-
-
-
-
 

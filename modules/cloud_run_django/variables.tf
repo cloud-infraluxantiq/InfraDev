@@ -39,15 +39,6 @@ variable "concurrency" {
 }
 
 # assigning env_vars
-variable "env_vars" {
-  description = "Environment variables injected into Cloud Run service"
-  type = map(object({
-    key   = string
-    value = string
-  }))
-  default = {}
-}
-
 
 # Request timeout for container execution (in seconds)
 variable "timeout_seconds" {
