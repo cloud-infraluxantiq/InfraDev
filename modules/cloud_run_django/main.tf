@@ -22,18 +22,19 @@ resource "google_cloud_run_service" "django" {
           }
         }
 
-     dynamic "env" {
-  for_each = var.env_vars
+dynamic "env" {
+  for_each = var.secret_env_vars
   content {
-    name = env.value.key
+    name = env.key
     value_from {
       secret_key_ref {
-        name = env.value.value
+        name = env.value
         key  = "latest"
       }
     }
   }
 }
+
 
         ports {
           container_port = 8080
