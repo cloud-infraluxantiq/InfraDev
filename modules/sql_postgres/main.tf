@@ -29,19 +29,19 @@ resource "google_sql_database_instance" "postgres_instance" {
       update_track = "stable"
     }
 
-   ip_configuration {
+    ip_configuration {
       ipv4_enabled    = true
       require_ssl     = true
       private_network = var.private_network
     }
 
     dynamic "database_flags" {
-  for_each = var.database_flags
-  content {
-    name  = database_flags.value.name
-    value = database_flags.value.value
-  }
-}
+      for_each = var.database_flags
+      content {
+        name  = database_flags.value.name
+        value = database_flags.value.value
+      }
+    }
   }
 
   deletion_protection   = true
@@ -73,7 +73,7 @@ resource "google_sql_database" "databases" {
 
 # ✅ IAM binding for SQL Admin (e.g., to GitHub deployer SA)
 resource "google_project_iam_member" "cloudsql_admin" {
-  role   = "roles/cloudsql.admin"
-  member = "serviceAccount:${var.service_account_email}"
+  role    = "roles/cloudsql.admin"
+  member  = "serviceAccount:${var.service_account_email}"
   project = var.project_id
 }
