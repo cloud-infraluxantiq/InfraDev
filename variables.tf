@@ -17,11 +17,6 @@ variable "region" {
   description = "Primary region for all GCP resources"
 }
 
-variable "project_number" {
-  type        = string
-  description = "The numeric project ID (used in IAM bindings, policies)"
-}
-
 variable "concurrency" {
   description = "Concurrency value for Cloud Run service"
   type        = number

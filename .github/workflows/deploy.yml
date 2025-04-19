@@ -76,10 +76,10 @@ jobs:
             TF_WORKSPACE: ${{ secrets.WORKSPACE }}
             TF_CLOUD_ORGANIZATION: ${{ secrets.CLOUD_ORGANIZATION }}
             TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-            TF_VAR_service_account_email: ${{ secrets.service_account_email }}
-
+           
             # Secrets: Passed as GCP Secret Manager names
             TF_VAR_project_number_secret: "dev-project-number"
+            TF_VAR_service_account_email: "service_account"
             TF_VAR_project_id_secret: "dev-project-id"
             TF_VAR_db_password_secret: "dev-db-password"
             TF_VAR_db_user_secret: "dev-db-user"

@@ -1,3 +1,26 @@
+# ---------------------------------
+# Pull project_number from GSM
+# ---------------------------------
+data "google_secret_manager_secret_version" "project_number" {
+  secret  = var.project_number_secret
+  project = var.project_id
+}
+
+locals {
+  project_number = data.google_secret_manager_secret_version.project_number.secret_data
+}
+
+# -- Fetch service account email from Google Secret Manager --
+data "google_secret_manager_secret_version" "service_account_email" {
+  secret  = var.service_account_email_secret
+  project = var.project_id
+}
+
+locals {
+  service_account_email = data.google_secret_manager_secret_version.service_account_email.secret_data
+}
+
+
 # ------------------------
 # Google Provider Setup
 # ------------------------
