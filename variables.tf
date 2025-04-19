@@ -36,12 +36,6 @@ variable "angular_image_url" {
   type        = string
   description = "Image URL for Angular frontend"
 }
-
-variable "django_domain" {
-  type        = string
-  description = "Custom domain for Django backend"
-}
-
 # --------------------------
 # IAM
 # --------------------------
