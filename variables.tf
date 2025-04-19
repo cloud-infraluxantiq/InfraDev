@@ -314,3 +314,42 @@ variable "disk_size" {
 }
 
 
+
+
+
+# ----------------------------
+# Added for VPC compatibility
+# ----------------------------
+variable "subnets" {
+  description = "Map of subnets with CIDR, region, and optional secondary ranges"
+  type = map(object({
+    cidr             = string
+    region           = string
+    secondary_ranges = map(string)
+  }))
+}
+
+variable "firewall_rules" {
+  description = "Map of firewall rules with advanced protocol support"
+  type = map(object({
+    description          = string
+    direction            = string
+    priority             = number
+    ranges               = list(string)
+    allow_protocol_ports = list(object({
+      protocol = string
+      ports    = list(string)
+    }))
+    target_tags = list(string)
+  }))
+}
+
+variable "encryption_key_name" {
+  type        = string
+  description = "KMS key for SQL instance encryption"
+}
+
+variable "service_account_email" {
+  type        = string
+  description = "Service account to use for SQL or other services"
+}
