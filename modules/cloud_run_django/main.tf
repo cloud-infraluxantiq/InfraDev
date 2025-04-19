@@ -22,15 +22,18 @@ resource "google_cloud_run_service" "django" {
           }
         }
 
-        env {
-          name = env.key
-          value_from {
-            secret_key_ref {
-              name = env.value    # Secret name from Secret Manager
-              key  = "latest"     # Versioned key or default key inside the secret
-            }
-          }
-        }
+     dynamic "env" {
+  for_each = var.env_vars
+  content {
+    name = env.value.key
+    value_from {
+      secret_key_ref {
+        name = env.value.value
+        key  = "latest"
+      }
+    }
+  }
+}
 
         ports {
           container_port = 8080
