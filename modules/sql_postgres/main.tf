@@ -35,7 +35,13 @@ resource "google_sql_database_instance" "postgres_instance" {
       require_ssl           = true
     }
 
-    database_flags = var.database_flags
+    dynamic "database_flags" {
+  for_each = var.database_flags
+  content {
+    name  = database_flags.value.name
+    value = database_flags.value.value
+  }
+}
   }
 
   deletion_protection   = true
