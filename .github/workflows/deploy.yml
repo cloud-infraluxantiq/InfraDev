@@ -1,4 +1,4 @@
-name: CI/CD - Deploy Luxantiq Infra
+name: CI/CD - Deploy Luxantiq GC_Cloud_InfraDev
 on:
   workflow_dispatch:
 
