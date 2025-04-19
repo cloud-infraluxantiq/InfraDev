@@ -35,17 +35,21 @@ resource "google_monitoring_alert_policy" "uptime_alert" {
 
   conditions {
     display_name = "django-api Down"
-    condition_threshold {
-      filter          = "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" AND resource.label.\"host\"=\"${var.django_domain}\""
-      duration        = "60s"
-      comparison      = "COMPARISON_LT"
-      threshold_value = 1
+condition_threshold {
+  filter = <<EOT
+metric.type="monitoring.googleapis.com/uptime_check/check_passed"
+AND resource.type="uptime_url"
+AND resource.label."host"="api.dev.django.luxantiq.com"
+EOT
+  comparison     = "COMPARISON_LT"
+  threshold_value = 1
+  duration        = "60s"
+  trigger {
+    count = 1
+  }
+}
 
-      aggregations {
-        alignment_period   = "60s"
-        per_series_aligner = "ALIGN_MEAN"
-      }
-    }
+
   }
 
   notification_channels = [] # Optional: Email, SMS, Slack, etc.
