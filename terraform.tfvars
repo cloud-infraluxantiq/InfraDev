@@ -52,12 +52,6 @@ users = {
     password = "your-db-password"  # Or load via secrets as string
   }
 }
-# ------------------------
-# Firebase Config
-# ------------------------
-#firebase_project_id   = "cloud-infra-dev-bcf2c"
-#firebase_auth_domain  = "cloud-infra-dev-bcf2c.firebaseapp.com"
-#firebase_api_key      = "AIzaSyC9XjFtVtRDu5Mq_2xWvrPDNF1tQaECl2k"
 
 # ------------------------
 # Razorpay Secrets
