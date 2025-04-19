@@ -149,7 +149,7 @@ variable "cloud_run_angular_service_name" {
 variable "dns_zone" {
   type        = string
   default     = "luxantiq-com-zone"
-  description = "Cloud DNS zone name"
+  description = "luxantiq-com-zone"
 }
 
 # --------------------------
