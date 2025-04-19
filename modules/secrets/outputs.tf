@@ -28,7 +28,3 @@ output "razorpay_api_key_id" {
   value = google_secret_manager_secret.razorpay_api_key.id
 }
 
-# GCS Service Key Secret ID
-output "gcs_service_key_id" {
-  value = google_secret_manager_secret.gcs_service_key.id
-}
