@@ -152,10 +152,3 @@ resource "google_dns_record_set" "django_dns" {
   ttl          = 300
   rrdatas      = [module.lb.lb_ip_address]
 }
-
-# Securely fetch service account email from Secret Manager
-data "google_secret_manager_secret_version" "service_account_email" {
-  secret  = var.service_account_email_secret
-  project = var.project_id
-}
-
