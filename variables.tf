@@ -204,22 +204,28 @@ variable "timeout_seconds" {
 # --------------------------
 # VPC
 # --------------------------
+variable "vpc_name" {
+  type = string
+}
+
+variable "vpc_connector_cidr" {
+  type = string
+}
+
+variable "subnets" {
+  type = list(object({
+    name          = string
+    ip_cidr_range = string
+    region        = string
+  }))
+}
 variable "vpc_connector" {
   type        = string
   description = "Name of the VPC connector to attach"
 }
-variable "vpc_connector_cidr" {
-  description = "CIDR range for the VPC Serverless connector"
-  type        = string
-}
-
 variable "vpc_connector_region" {
   type        = string
   description = "Region to deploy VPC connector"
-}
-variable "vpc_name" {
-  description = "Name of the VPC network"
-  type        = string
 }
 variable "private_network" {
   description = "The self-link of the VPC network to connect Cloud SQL"
@@ -228,6 +234,37 @@ variable "private_network" {
 variable "nat_region" {
   description = "Region used for Cloud NAT and Router"
   type        = string
+}
+# --------------------------
+# FIrewall
+# --------------------------
+
+variable "firewall_rules" {
+  description = "Map of firewall rule configurations"
+  type        = map(object({
+    description          = string
+    direction            = string
+    priority             = number
+    ranges               = list(string)
+    allow_protocol_ports = list(object({
+      protocol = string
+      ports    = list(string)
+    }))
+  }))
+}
+
+variable "databases" {
+  description = "List of PostgreSQL database names to create"
+  type        = list(string)
+}
+
+variable "database_flags" {
+  description = "Database flags for Cloud SQL (e.g. for tuning)"
+  type        = list(object({
+    name  = string
+    value = string
+  }))
+  default = []
 }
 
 # --------------------------
@@ -267,38 +304,6 @@ variable "users" {
     password = string
   }))
 }
-# --------------------------
-# FIrewall
-# --------------------------
-
-variable "firewall_rules" {
-  description = "Map of firewall rule configurations"
-  type        = map(object({
-    description          = string
-    direction            = string
-    priority             = number
-    ranges               = list(string)
-    allow_protocol_ports = list(object({
-      protocol = string
-      ports    = list(string)
-    }))
-  }))
-}
-
-variable "databases" {
-  description = "List of PostgreSQL database names to create"
-  type        = list(string)
-}
-
-variable "database_flags" {
-  description = "Database flags for Cloud SQL (e.g. for tuning)"
-  type        = list(object({
-    name  = string
-    value = string
-  }))
-  default = []
-}
-
 # --------------------------
 # Disk size 
 # --------------------------
