@@ -1,3 +1,15 @@
+# ---------------------------------
+# Pull project_number from GSM
+# ---------------------------------
+data "google_secret_manager_secret_version" "project_number" {
+  secret  = var.project_number_secret
+  project = var.project_id
+}
+
+locals {
+  project_number = data.google_secret_manager_secret_version.project_number.secret_data
+}
+
 # ------------------------
 # Google Provider Setup
 # ------------------------
