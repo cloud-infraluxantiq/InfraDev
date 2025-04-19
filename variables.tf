@@ -36,6 +36,10 @@ variable "angular_image_url" {
   type        = string
   description = "Image URL for Angular frontend"
 }
+variable "django_image_url" {
+  type        = string
+  description = "Docker image URL for Django"
+}
 # --------------------------
 # IAM
 # --------------------------
@@ -294,3 +298,14 @@ variable "database_flags" {
   }))
   default = []
 }
+
+# --------------------------
+# Disk size 
+# --------------------------
+
+variable "disk_size" {
+  type        = number
+  description = "Disk size for the Cloud SQL instance"
+}
+
+
