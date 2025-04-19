@@ -19,7 +19,13 @@ variable "project_id" {
   type        = string
   description = "Project ID for creating the VPC"
 }
-
+dynamic "env" {
+  for_each = var.env_vars
+  content {
+    name  = env.key
+    value = env.value
+  }
+}
 # ------------------------
 # Core Infrastructure Modules
 # ------------------------
